@@ -1,0 +1,13 @@
+th.small-col, td.small-col {
+    width: 1px;
+    white-space: nowrap;
+}
+
+main { margin-bottom: 20px; }
+.block { max-width: 1200px; }
+
+.progress {
+    margin-bottom: 0;
+}
+
+.panel.panel-primary .panel-heading a { color: #fff; }

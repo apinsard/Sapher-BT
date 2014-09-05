@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% load markdown_filters %}
+{% block main %}
+<div class="block">
+    <div class="page-header">
+        <h1>ALA-{{ issue.id }} / <small>{{ issue.title }} <a href="{{ issue.get_edit_url }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span> Modifier</a></small></h1>
+    </div>
+
+    <table id=issue-item class="table table-striped">
+        <tr>
+            <th class='small-col'>Type</th>
+            <td>{{ issue.type_label|safe }} {{ issue.type_name }}</td>
+            <th class='small-col'>Priorité</th>
+            <td>{{ issue.priority_label|safe }} {{ issue.priority_name }}</td>
+        </tr>
+        <tr>
+            <th class='small-col'>Créée le</th>
+            <td>{{ issue.created_on }}</td>
+            <th class='small-col'>Relevé par</th>
+            <td>{{ issue.reporter }}</td>
+        </tr>
+        <tr>
+            <th class='small-col'>Modifiée le</th>
+            <td>{{ issue.updated_on }}</td>
+            <th class='small-col'>Assigné à</th>
+            <td>{{ issue.assignee|default_if_none:"<i>Personne</i>" }}</td>
+        </tr>
+        <tr>
+            <th class='small-col'>État d'avancement</th>
+            <td colspan=3>{{ issue.state_label|safe }}</td>
+        </tr>
+    </table>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Description</div>
+        <div class="panel-body">{{ issue.description|markdown|safe}}</div>
+    </div>
+
+    {% if not comment_form.instance.pk %}
+    <form class="panel panel-primary" method=POST>
+        <div class="panel-heading">Déposer un commentaire</div>
+        <div class="panel-body">
+            <textarea name="{{ comment_form.content.name }}" id="id_{{ commment_form.content.name }}" class="form-control"
+                placeholder="Rédigez votre commentaire ici" rows=7></textarea>
+            <p class="help-block">Le texte sera formaté en <a target=_blank href="http://fr.wikipedia.com/wiki/Markdown">Mardown</a>. HTML également autorisé pour un formattage avancé. Un saut à la ligne est équivalent à un espace. Deux sauts à la ligne consécutifs marquent un changement de paragraphe.</p>
+            <button type=submit class="btn btn-primary btn-sm">Déposer</button>
+        </div>
+    </form>
+    {% endif %}
+
+    {% for comment in comments %}
+        {% if comment.pk == comment_form.instance.pk %}
+        <form class="panel panel-primary" id={{ comment.id }} method=POST>
+            <div class="panel-heading">
+                <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
+            </div>
+            <div class="panel-body">
+                <textarea name="{{ comment_form.content.name }}" id="id_{{ commment_form.content.name }}" class="form-control"
+                    placeholder="Rédigez votre commentaire ici" rows=7>{{ comment_form.content.value }}</textarea>
+                <p class="help-block">Le texte sera formaté en <a target=_blank href="http://fr.wikipedia.com/wiki/Markdown">Mardown</a>. HTML également autorisé pour un formattage avancé. Un saut à la ligne est équivalent à un espace. Deux sauts à la ligne consécutifs marquent un changement de paragraphe.</p>
+                <button type=submit class="btn btn-primary btn-sm">Déposer</button>
+            </div>
+        </form>
+        {% else %}
+        <div class="panel panel-primary" id={{ comment.id }}>
+            <div class="panel-heading">
+                <a class="pull-right" data-toggle=tooltip title="Modifier" href={{ comment.get_edit_url }}><span class="glyphicon glyphicon-pencil"></span></a>
+                <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
+            </div>
+            <div class="panel-body">{{ comment.content|markdown|safe }}</div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

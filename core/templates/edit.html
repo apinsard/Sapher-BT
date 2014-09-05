@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+{% block main %}
+<form class="block" method="post">
+    <div class="page-header">
+        <h1 class="form-inline">
+        {% if issue %}
+        <a href="{{ issue.get_absolute_url }}">ALA-{{ issue.id }}</a>
+        {% else %}
+        Nouvelle tâche
+        {% endif %}
+        / <small><input type=text class="form-control input-lg" size=90 name="{{ form.title.name }}" id="id_{{ form.title.name }}" value="{{ form.title.value|default_if_none:"" }}" placeholder="Titre de la tâche"></small></h1>
+    </div>
+
+    <table id=issue-item class="table table-striped form-inline">
+        <tr>
+            <th class='small-col'>{{ form.type.label }}</th>
+            <td>
+                <select name="{{ form.type.name }}" id="id_{{ form.type.name }}" class="form-control">
+                    {% for x,y in  form.type.field.choices %}
+                    <option value="{{ x }}"{% if x == form.type.value %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <th class='small-col'>{{ form.priority.label }}</th>
+            <td>
+                <select name="{{ form.priority.name }}" id="id_{{ form.priority.name }}" class="form-control">
+                    {% for x,y in  form.priority.field.choices %}
+                    <option value="{{ x }}"{% if x == form.priority.value %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th class='small-col'>Créée le</th>
+            <td>{{ issue.created_on|default:"<i>Jamais</i>" }}</td>
+            <th class='small-col'>Relevé par</th>
+            <td>{{ issue.reporter|default:user.username }}</td>
+        </tr>
+        <tr>
+            <th class='small-col'>Modifiée le</th>
+            <td>{{ issue.updated_on|default:"<i>Jamais</i>" }}</td>
+            <th class='small-col'>{{ form.assignee.label }}</th>
+            <td>
+                <select name="{{ form.assignee.name }}" id="id_{{ form.assignee.name }}" class="form-control">
+                    {% for x,y in  form.assignee.field.choices %}
+                    <option value="{{ x }}"{% if x == form.assignee.value %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+            <th class='small-col'>{{ form.state.label }}</th>
+            <td colspan=3>
+                <select name="{{ form.state.name }}" id="id_{{ form.state.name }}" class="form-control">
+                    {% for x,y in  form.state.field.choices %}
+                    <option value="{{ x }}"{% if x == form.state.value %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+    </table>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Description</div>
+        <div class="panel-body">
+            <p class="help-block">Le texte sera formaté en <a target=_blank href="http://fr.wikipedia.com/wiki/Markdown">Mardown</a>. HTML également autorisé pour un formattage avancé. Un saut à la ligne est équivalent à un espace. Deux sauts à la ligne consécutifs marquent un changement de paragraphe.</p>
+            <textarea name="{{ form.description.name }}" id="id_{{ form.description.name }}" class="form-control" placeholder="Entrer une description de la tâche à effectuer" rows=20>{{ form.description.value|default_if_none:"" }}</textarea>
+        </div>
+    </div>
+
+    <button type=submit class="btn btn-md btn-primary">{% if issue %}Enregistrer les modifications{% else %}Créer la tâche{% endif %}</button>
+</div>
+{% endblock %}

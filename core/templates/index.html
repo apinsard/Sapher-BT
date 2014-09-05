@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block main %}
+<div class="block">
+    <form method=post class=form-inline>
+        <table class="table">
+            <tr>
+                <th class="small-col">Trier par</th>
+                <td colspan=2>{{ usersettings.html_orderby_select|safe }}</td>
+            </tr>
+            <tr>
+                <th class="small-col" rowspan=3>Filtrer par</th>
+                <th class="small-col">Type</th>
+                <td>{{ usersettings.html_filter_type_checkboxes|safe }}</td>
+            </tr>
+            <tr>
+                <th class="small-col">Priorité</th>
+                <td>{{ usersettings.html_filter_priority_checkboxes|safe }}</td>
+            </tr>
+            <tr>
+                <th class="small-col">État</th>
+                <td>{{ usersettings.html_filter_state_checkboxes|safe }}</td>
+            </tr>
+            <tr>
+                <td colspan=3><button type=submit class="btn btn-info btn-sm">Appliquer</button></td>
+            </tr>
+        </table>
+    </form>
+    <table id=issues-list class="table table-hover">
+        <tr>
+            <th class="small-col">T</th>
+            <th class="small-col">P</th>
+            <th>ID / Titre</th>
+            <th>Assigné à</th>
+            <th>État</th>
+        </tr>
+        {% for issue in issues %}
+        <tr>
+            <td>{{ issue.type_label|safe }}</td>
+            <td>{{ issue.priority_label|safe }}</td>
+            <td><a href="{{ issue.get_absolute_url }}"><b>ALA-{{ issue.id }} /</b> {{ issue.title }}</a></td>
+            <td>{{ issue.assignee.username|default:"<i>Personne</i>" }}</td>
+            <td>{{ issue.small_state_label|safe }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

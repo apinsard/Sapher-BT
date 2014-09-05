@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Aladom Bug Tracker</title>
+        <link rel=stylesheet href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel=stylesheet href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
+        <link rel=stylesheet href="{% static 'core/css/global.css' %}">
+        <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        <script>
+$(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+        </script>
+    </head>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'issues_list' %}">Aladom BT</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'new_issue' %}"><span class="btn btn-xs btn-info">Créer une tâche</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/admin/auth/user/{{ user.id }}/">{{ user.username }}</a></li>
+                    <li><a href="{% url 'signout' %}"><span class="glyphicon glyphicon-off"></span></a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <main class="container-fluid">{% block main %}{% endblock %}</main>
+</html>
