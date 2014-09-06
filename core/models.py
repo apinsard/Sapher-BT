@@ -231,30 +231,30 @@ class Issue(models.Model):
 class Comment(models.Model):
 
     class Meta:
-        verbose_name = u"commentaire"
-        verbose_name_plural = u"commentaires"
+        verbose_name = "commentaire"
+        verbose_name_plural = "commentaires"
 
     author = models.ForeignKey('auth.User',
-            verbose_name = u"auteur",
+            verbose_name = "auteur",
             related_name = 'comments'
             )
 
     issue = models.ForeignKey(Issue,
-            verbose_name = u"tâche",
+            verbose_name = "tâche",
             related_name = 'comments'
             )
 
     content = models.TextField(
-            verbose_name = u"commentaire"
+            verbose_name = "commentaire"
             )
 
     posted_on = models.DateTimeField(
-            verbose_name = u"posté le",
+            verbose_name = "posté le",
             auto_now_add = True
             )
 
     edited_on = models.DateTimeField(
-            verbose_name = u"modifié le",
+            verbose_name = "modifié le",
             auto_now     = True
             )
 
