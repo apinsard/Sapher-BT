@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 
 try:
-    import djenv
+    from AladomBT import djenv
 except ImportError:
     djenv = {}
 
