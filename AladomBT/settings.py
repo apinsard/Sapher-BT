@@ -10,22 +10,25 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+try:
+    import djenv
+except ImportError:
+    djenv = {}
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-8j@cxj^72z4ku=o1@hep1cr6&v^70421us$o-+)cs(36#y)hr'
+SECRET_KEY = djenv.get('SECRET_KEY', '-8j@cxj^72z4ku=o1@hep1cr6&v^70421us$o-+)cs(36#y)hr')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = djenv.get('DEBUG', True)
+TEMPLATE_DEBUG = djenv.get('TEMPLATE_DEBUG', DEBUG)
 
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = djenv.get('ALLOWED_HOSTS', [])
 
 # Application definition
 
@@ -65,13 +68,14 @@ DATABASES = {
         'HOST': ''
     }
 }
+DATABASES = djenv.get('DATABASES', DATABASES)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'fr-fr'
+LANGUAGE_CODE = djenv.get('LANGUAGE_CODE', 'fr-fr')
 
-TIME_ZONE = 'Europe/Paris'
+TIME_ZONE = djenv.get('TIMEZONE', 'Europe/Paris')
 
 USE_I18N = True
 
