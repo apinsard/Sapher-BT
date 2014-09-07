@@ -6,7 +6,7 @@ class IssueForm(forms.ModelForm):
 
     class Meta:
         model = Issue
-        fields = ['type', 'priority', 'state', 'assignee', 'title', 'description']
+        fields = ['project', 'type', 'priority', 'state', 'assignee', 'title', 'description']
 
 class CommentForm(forms.ModelForm):
 
