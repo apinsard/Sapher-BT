@@ -1,5 +1,5 @@
 *.sw[po]
 *.py[co]
-AladomBT/env.py
+AladomBT/djenv.py
 **/__pycache__
 **/migrations
