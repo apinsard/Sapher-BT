@@ -1,6 +1,6 @@
 #-*-coding:utf-8-*-
 from django import forms
-from core.models import Issue, Comment
+from core.models import *
 
 class IssueForm(forms.ModelForm):
 
@@ -13,4 +13,3 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
-

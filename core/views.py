@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
+from django.template import RequestContext
 from core.models import *
 from core.forms import *
 
@@ -19,7 +20,7 @@ def signin(request):
     if request.user.is_authenticated():
         return redirect('/')
 
-    return render_to_response('login.html')
+    return render_to_response('login.html', {}, RequestContext(request))
 
 def signout(request):
     logout(request)
@@ -29,12 +30,51 @@ def home(request):
     if not request.user.is_authenticated():
         return redirect(reverse('signin') + ('?next=%s' % request.path))
 
+    orderby_choices = UserSettings.ORDERBY_CHOICES
+
+    try:
+        usersettings = UserSettings.objects.get(user_id=request.user.pk)
+    except UserSettings.DoesNotExist:
+        usersettings = UserSettings(user_id=request.user.pk)
+        usersettings.save()
+
+    issue_types = IssueType.objects.all()
+    issue_priorities = IssuePriority.objects.all()
+    issue_states = IssueState.objects.all()
+
+    if request.method == 'POST':
+        if request.POST['orderby'] in orderby_choices:
+            usersettings.orderby = request.POST['orderby']
+
+        usersettings.filter_types = UserSettings.FILTERS_ALL_ENABLED
+        for type in issue_types:
+            if 'filter_type#'+str(type.id) not in request.POST:
+                usersettings.disable_filter(type)
+
+        usersettings.filter_priorities = UserSettings.FILTERS_ALL_ENABLED
+        for priority in issue_priorities:
+            if 'filter_priority#'+str(priority.id) not in request.POST:
+                usersettings.disable_filter(priority)
+
+        usersettings.filter_states = UserSettings.FILTERS_ALL_ENABLED
+        for state in issue_states:
+            if 'filter_state#'+str(state.id) not in request.POST:
+                usersettings.disable_filter(state)
+
+        usersettings.save()
+        print('saved', usersettings)
+
     issues = Issue.objects.all()
 
     return render_to_response('index.html', {
-        'user'   : request.user,
-        'issues' : issues,
-    })
+        'user': request.user,
+        'issues': issues,
+        'issue_types': issue_types,
+        'issue_priorities': issue_priorities,
+        'issue_states': issue_states,
+        'usersettings': usersettings,
+        'orderby_choices': orderby_choices,
+    }, RequestContext(request))
 
 def edit_issue(request, pid=None, id=None):
     if not request.user.is_authenticated():
@@ -59,16 +99,16 @@ def edit_issue(request, pid=None, id=None):
         'user': request.user,
         'issue': issue,
         'form': form,
-        })
+    }, RequestContext(request))
 
 def view_issue(request, pid, id, cid=None):
     if not request.user.is_authenticated():
         return redirect(reverse('signin') + ('?next=%s' % request.path))
 
-    issue = Issue.objects.get(pk=id)
+    issue = get_object_or_404(Issue, pk=id)
     comments = issue.comments.all()
     comment = None
-    
+
     if cid:
         comment = issue.comments.get(pk=cid)
 
@@ -90,5 +130,5 @@ def view_issue(request, pid, id, cid=None):
         'issue': issue,
         'comments': comments,
         'comment_form': form
-        })
+    }, RequestContext(context))
 

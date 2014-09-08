@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 _pid = r'(?P<pid>[A-Z]{2,3})'
 _id  = r'(?P<id>\d+)'
-_cid = r'(?P(cid>\d+)'
+_cid = r'(?P<cid>\d+)'
 
 urlpatterns = patterns('core.views',
     url(r'^$'                                         , 'home'       , name='issues_list'  ),

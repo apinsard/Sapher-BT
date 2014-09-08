@@ -1,27 +1,57 @@
 {% extends 'layout.html' %}
+{% load issue_filters %}
 {% block main %}
 <div class="block">
     <form method=post class=form-inline>
-        <table class="table">
+        {% csrf_token %}
+        <table class=table>
             <tr>
-                <th class="small-col">Trier par</th>
-                <td colspan=2>{{ usersettings.html_orderby_select|safe }}</td>
+                <th class=small-col>Sort by</th>
+                <td colspan=2>
+                    <select name=orderby class=form-control>
+                    {% for value, label in orderby_choices %}
+                        <option value="{{ value }}"
+                            {% if value == usersettings.orderby %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                    </select>
+                </td>
             </tr>
             <tr>
-                <th class="small-col" rowspan=3>Filtrer par</th>
-                <th class="small-col">Type</th>
-                <td>{{ usersettings.html_filter_type_checkboxes|safe }}</td>
+                <th class=small-col rowspan=3>Filter by</th>
+                <th class=small-col>Type</th>
+                <td>
+                    <div class=checkbox>
+                    {% for type in issue_types %}
+                        &emsp;<label><input type=checkbox name="filter_type#{{ type.id }}"
+                            {% if usersettings|filter_enabled:type %}checked{% endif %}>&nbsp;{{ type.name }}</label>
+                    {% endfor %}
+                    </div>
+                </td>
             </tr>
             <tr>
-                <th class="small-col">Priorité</th>
-                <td>{{ usersettings.html_filter_priority_checkboxes|safe }}</td>
+                <th class=small-col>Priority</th>
+                <td>
+                    <div class=checkbox>
+                    {% for priority in issue_priorities %}
+                        &emsp;<label><input type=checkbox name="filter_priority#{{ priority.id }}"
+                            {% if usersettings|filter_enabled:priority %}checked{% endif %}>&nbsp;{{ priority.name }}</label>
+                    {% endfor %}
+                    </div>
+                </td>
             </tr>
             <tr>
-                <th class="small-col">État</th>
-                <td>{{ usersettings.html_filter_state_checkboxes|safe }}</td>
+                <th class=small-col>State</th>
+                <td>
+                    <div class=checkbox>
+                    {% for state in issue_states %}
+                        &emsp;<label><input type=checkbox name="filter_state#{{ state.id }}"
+                            {% if usersettings|filter_enabled:state %}checked{% endif %}>&nbsp;{{ state.name }}</label>
+                    {% endfor %}
+                    </div>
+                </td>
             </tr>
             <tr>
-                <td colspan=3><button type=submit class="btn btn-info btn-sm">Appliquer</button></td>
+                <td colspan=3><button type=submit class="btn btn-info btn-sm">Apply</button></td>
             </tr>
         </table>
     </form>
@@ -35,11 +65,11 @@
         </tr>
         {% for issue in issues %}
         <tr>
-            <td>{{ issue.type_label|safe }}</td>
-            <td>{{ issue.priority_label|safe }}</td>
+            <td>{{ issue.type|labelize }}</td>
+            <td>{{ issue.priority|labelize }}</td>
             <td><a href="{{ issue.get_absolute_url }}"><b>ALA-{{ issue.id }} /</b> {{ issue.title }}</a></td>
             <td>{{ issue.assignee.username|default:"<i>Personne</i>" }}</td>
-            <td>{{ issue.small_state_label|safe }}</td>
+            <td>{{ issue.state|labelize }}</td>
         </tr>
         {% endfor %}
     </table>

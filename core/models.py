@@ -72,7 +72,7 @@ class IssueState(models.Model):
     )
 
     progression = models.PositiveSmallIntegerField(
-        verbose_name = "progession",
+        verbose_name = "progression",
         validators   = [MaxValueValidator(100)],
         default      = 100,
     )
@@ -108,7 +108,7 @@ class IssuePriority(models.Model):
     )
 
     level = models.PositiveSmallIntegerField(
-        verbose_name = "leve",
+        verbose_name = "level",
         default      = 100,
         help_text    = "The higher number, the higher priority.",
     )
@@ -120,7 +120,7 @@ class Project(models.Model):
 
     class Meta:
         verbose_name = "project"
-        verbose_name = "projects"
+        verbose_name_plural = "projects"
 
     id = models.CharField(
         verbose_name = "ID",
@@ -249,21 +249,23 @@ class UserSettings(models.Model):
         ('state__progression'  , "Ascending state progression"),
     ]
 
+    FILTERS_ALL_ENABLED = 2**31-1
+
     user = models.OneToOneField('auth.User')
 
     type_filters = models.PositiveIntegerField(
         verbose_name = "type filters",
-        default      = 2**32-1
+        default      = FILTERS_ALL_ENABLED,
     )
 
     state_filters = models.PositiveIntegerField(
         verbose_name = "state filters",
-        default      = 2**32-1
+        default      = FILTERS_ALL_ENABLED,
     )
 
     priority_filters = models.PositiveIntegerField(
         verbose_name = "priority filters",
-        default      = 2**32-1
+        default      = FILTERS_ALL_ENABLED,
     )
 
     orderby = models.CharField(
@@ -272,4 +274,24 @@ class UserSettings(models.Model):
         choices      = ORDERBY_CHOICES,
         default      = ORDERBY_CHOICES[0][0],
     )
+
+    def filter_enabled(self, inst):
+        if type(inst) is IssueType:
+            return self.type_filters & (2**inst.id)
+        elif type(inst) is IssueState:
+            return self.state_filters & (2**inst.id)
+        elif type(inst) is IssuePriority:
+            return self.priority_filters & (2**inst.id)
+        else:
+            raise TypeError("Invalid argument type")
+
+    def disable_filter(self, inst):
+        if type(inst) is IssueType:
+            self.type_filters &=  ~(2**inst.id)
+        elif type(inst) is IssueState:
+            self.state_filters &= ~(2**inst.id)
+        elif type(inst) is IssuePriority:
+            self.priority_filters &= ~(2**inst.id)
+        else:
+            raise TypeError("Invalid argument type")
 
