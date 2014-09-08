@@ -286,12 +286,13 @@ class UserSettings(models.Model):
             raise TypeError("Invalid argument type")
 
     def disable_filter(self, inst):
+        reverted_mask = ~ 2**inst.id % (UserSettings.FILTERS_ALL_ENABLED+1)
         if type(inst) is IssueType:
-            self.type_filters &=  ~(2**inst.id)
+            self.type_filters &= reverted_mask
         elif type(inst) is IssueState:
-            self.state_filters &= ~(2**inst.id)
+            self.state_filters &= reverted_mask
         elif type(inst) is IssuePriority:
-            self.priority_filters &= ~(2**inst.id)
+            self.priority_filters &= reverted_mask
         else:
             raise TypeError("Invalid argument type")
 

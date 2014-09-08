@@ -43,26 +43,25 @@ def home(request):
     issue_states = IssueState.objects.all()
 
     if request.method == 'POST':
-        if request.POST['orderby'] in orderby_choices:
+        if request.POST['orderby'] in [u for u,v in orderby_choices]:
             usersettings.orderby = request.POST['orderby']
 
-        usersettings.filter_types = UserSettings.FILTERS_ALL_ENABLED
+        usersettings.type_filters = UserSettings.FILTERS_ALL_ENABLED
         for type in issue_types:
             if 'filter_type#'+str(type.id) not in request.POST:
                 usersettings.disable_filter(type)
 
-        usersettings.filter_priorities = UserSettings.FILTERS_ALL_ENABLED
+        usersettings.priority_filters = UserSettings.FILTERS_ALL_ENABLED
         for priority in issue_priorities:
             if 'filter_priority#'+str(priority.id) not in request.POST:
                 usersettings.disable_filter(priority)
 
-        usersettings.filter_states = UserSettings.FILTERS_ALL_ENABLED
+        usersettings.state_filters = UserSettings.FILTERS_ALL_ENABLED
         for state in issue_states:
             if 'filter_state#'+str(state.id) not in request.POST:
                 usersettings.disable_filter(state)
 
         usersettings.save()
-        print('saved', usersettings)
 
     issues = Issue.objects.all()
 
