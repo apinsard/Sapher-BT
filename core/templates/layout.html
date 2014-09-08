@@ -1,4 +1,6 @@
+{# Distributed under the terms of the GNU General Public License v2 #}
 {% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,7 +20,7 @@ $(function() {
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
+                    <span class="sr-only">{% trans "Toggle navigation" %}</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -28,7 +30,7 @@ $(function() {
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'new_issue' %}"><span class="btn btn-xs btn-info">New Issue</span></a></li>
+                    <li><a href="{% url 'new_issue' %}"><span class="btn btn-xs btn-info">{% trans "New Issue" %}</span></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/admin/auth/user/{{ user.id }}/">{{ user.username }}</a></li>

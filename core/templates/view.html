@@ -1,33 +1,35 @@
+{# Distributed under the terms of the GNU General Public License v2 #}
 {% extends 'layout.html' %}
 {% load markdown_filters %}
+{% load issue_filters %}
 {% block main %}
 <div class="block">
     <div class="page-header">
-        <h1>ALA-{{ issue.id }} / <small>{{ issue.title }} <a href="{{ issue.get_edit_url }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span> Modifier</a></small></h1>
+        <h1>{{ issue.project_id }}-{{ issue.id }} / <small>{{ issue.title }} <a href="{{ issue.get_edit_url }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a></small></h1>
     </div>
 
     <table id=issue-item class="table table-striped">
         <tr>
             <th class='small-col'>Type</th>
-            <td>{{ issue.type_label|safe }} {{ issue.type_name }}</td>
-            <th class='small-col'>Priorité</th>
-            <td>{{ issue.priority_label|safe }} {{ issue.priority_name }}</td>
+            <td>{{ issue.type|labelize:True }}</td>
+            <th class='small-col'>Priority</th>
+            <td>{{ issue.priority|labelize:True }}</td>
         </tr>
         <tr>
-            <th class='small-col'>Créée le</th>
+            <th class='small-col'>Created on</th>
             <td>{{ issue.created_on }}</td>
-            <th class='small-col'>Relevé par</th>
+            <th class='small-col'>Reporter</th>
             <td>{{ issue.reporter }}</td>
         </tr>
         <tr>
-            <th class='small-col'>Modifiée le</th>
+            <th class='small-col'>Last update on</th>
             <td>{{ issue.updated_on }}</td>
-            <th class='small-col'>Assigné à</th>
-            <td>{{ issue.assignee|default_if_none:"<i>Personne</i>" }}</td>
+            <th class='small-col'>Assignee</th>
+            <td>{{ issue.assignee|default_if_none:"<i>Unassigned</i>" }}</td>
         </tr>
         <tr>
-            <th class='small-col'>État d'avancement</th>
-            <td colspan=3>{{ issue.state_label|safe }}</td>
+            <th class='small-col'>Progress</th>
+            <td colspan=3>{{ issue.state|labelize:True }}</td>
         </tr>
     </table>
 

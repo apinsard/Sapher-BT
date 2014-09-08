@@ -1,3 +1,4 @@
+# Distributed under the terms of the GNU General Public License v2
 from django.conf.urls import patterns, url
 
 _pid = r'(?P<pid>[A-Z]{2,3})'

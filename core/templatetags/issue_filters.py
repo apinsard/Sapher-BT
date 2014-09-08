@@ -1,3 +1,4 @@
+# Distributed under the terms of the GNU General Public License v2
 from django import template
 from django.utils.safestring import mark_safe
 from core.models import IssueType, IssueState, IssuePriority
@@ -20,10 +21,18 @@ def labelize(inst, large=False):
 def filter_enabled(user_settings, inst):
     return user_settings.filter_enabled(inst)
 
+@register.filter
+def verbose_name(model, field_name):
+    return model._meta.get_field(field_name).verbose_name
 
 def labelize_type(issue_type, large=False):
-    html = '<span class="label label-%(css_class)s" title="%(name)s"> '\
-        + '<span class="glyphicon glyphicon-%(icon)s"></span></span>'
+    html = '<span class="label label-%(css_class)s"'
+    if not large:
+        html += ' title="%(name)s"'
+    html +='><span class="glyphicon glyphicon-%(icon)s"></span>'
+    if large:
+        html += '&ensp;%(name)s'
+    html += '</span>'
 
     return html % {
         'css_class' : issue_type.css_class,
@@ -49,7 +58,12 @@ def labelize_state(issue_state, large=False):
     }
 
 def labelize_priority(issue_priority, large=False):
-    html = '<span class="glyphicon glyphicon-%(icon)s" title="%(name)s"></span>'
+    html = '<span class="glyphicon glyphicon-%(icon)s"'
+    if not large:
+        html += ' title="%(name)s"'
+    html += '></span>'
+    if large:
+        html += '&ensp;%(name)s'
 
     return html % {
         'name'      : issue_priority.name,

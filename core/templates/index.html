@@ -1,12 +1,14 @@
+{# Distributed under the terms of the GNU General Public License v2 #}
 {% extends 'layout.html' %}
 {% load issue_filters %}
+{% load i18n %}
 {% block main %}
 <div class="block">
     <form method=post class=form-inline>
         {% csrf_token %}
         <table class=table>
             <tr>
-                <th class=small-col>Sort by</th>
+                <th class=small-col>{{ usersettings|verbose_name:"orderby"|capfirst }}</th>
                 <td colspan=2>
                     <select name=orderby class=form-control>
                     {% for value, label in orderby_choices %}
@@ -17,8 +19,8 @@
                 </td>
             </tr>
             <tr>
-                <th class=small-col rowspan=3>Filter by</th>
-                <th class=small-col>Type</th>
+                <th class=small-col rowspan=3>{% trans "Filter by" %}</th>
+                <th class=small-col>{{ issues.model|verbose_name:"type"|capfirst }}</th>
                 <td>
                     <div class=checkbox>
                     {% for type in issue_types %}
@@ -29,7 +31,7 @@
                 </td>
             </tr>
             <tr>
-                <th class=small-col>Priority</th>
+                <th class=small-col>{{ issues.model|verbose_name:"priority"|capfirst }}</th>
                 <td>
                     <div class=checkbox>
                     {% for priority in issue_priorities %}
@@ -40,7 +42,7 @@
                 </td>
             </tr>
             <tr>
-                <th class=small-col>State</th>
+                <th class=small-col>{{ issues.model|verbose_name:"state"|capfirst }}</th>
                 <td>
                     <div class=checkbox>
                     {% for state in issue_states %}
@@ -51,17 +53,17 @@
                 </td>
             </tr>
             <tr>
-                <td colspan=3><button type=submit class="btn btn-info btn-sm">Apply</button></td>
+                <td colspan=3><button type=submit class="btn btn-info btn-sm">{% trans "Apply" context "a modification" %}</button></td>
             </tr>
         </table>
     </form>
     <table id=issues-list class="table table-hover">
         <tr>
-            <th class="small-col">T</th>
-            <th class="small-col">P</th>
-            <th>ID / Titre</th>
-            <th>Assigné à</th>
-            <th>État</th>
+            <th class="small-col">{% trans "T" context "shortcut for 'Type' column in the listing" %}</th>
+            <th class="small-col">{% trans "P" context "shortcut for 'Priority' column in the listing" %}</th>
+            <th>{{ issues.model|verbose_name:"id" }} / {{ issues.model|verbose_name:"title"|capfirst }}</th>
+            <th>{{ issues.model|verbose_name:"assignee"|capfirst }}</th>
+            <th>{{ issues.model|verbose_name:"state"|capfirst }}</th>
         </tr>
         {% for issue in issues %}
         <tr>

@@ -1,3 +1,4 @@
+# Distributed under the terms of the GNU General Public License v2
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect, get_object_or_404
@@ -126,5 +127,5 @@ def view_issue(request, pid, id, cid=None):
         'issue': issue,
         'comments': comments,
         'comment_form': form
-    }, RequestContext(context))
+    }, RequestContext(request))
 
