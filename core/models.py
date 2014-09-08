@@ -14,6 +14,8 @@ class IssueType(models.Model):
         verbose_name_plural = "types"
         ordering = ['id']
 
+    filter_name = 'type'
+
     id = models.PositiveSmallIntegerField(
         verbose_name = 'ID',
         primary_key  = True,
@@ -51,6 +53,8 @@ class IssueState(models.Model):
         verbose_name_plural = "states of progress"
         ordering = ['progression', 'id']
 
+    filter_name = 'state'
+
     id = models.PositiveSmallIntegerField(
         verbose_name = 'ID',
         primary_key  = True,
@@ -86,6 +90,8 @@ class IssuePriority(models.Model):
         verbose_name = "priority level"
         verbose_name_plural = "priority levels"
         ordering = ['-level']
+
+    filter_name = 'priority'
 
     id = models.PositiveSmallIntegerField(
         verbose_name = 'ID',
@@ -285,6 +291,9 @@ class UserSettings(models.Model):
         else:
             raise TypeError("Invalid argument type")
 
+    def filter_disabled(self, inst):
+        return not self.filter_enabled(inst)
+
     def disable_filter(self, inst):
         reverted_mask = ~ 2**inst.id % (UserSettings.FILTERS_ALL_ENABLED+1)
         if type(inst) is IssueType:
@@ -295,4 +304,7 @@ class UserSettings(models.Model):
             self.priority_filters &= reverted_mask
         else:
             raise TypeError("Invalid argument type")
+
+    def reset_filters(self):
+        self.type_filters, self.state_filters, self.priority_filters = (UserSettings.FILTERS_ALL_ENABLED,)*3
 

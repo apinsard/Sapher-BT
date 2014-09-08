@@ -5,6 +5,8 @@ from django.template import RequestContext
 from core.models import *
 from core.forms import *
 
+from itertools import chain
+
 def root(request):
     if request.user.is_authenticated():
         return redirect(reverse('issues_list'))
@@ -41,29 +43,24 @@ def home(request):
     issue_types = IssueType.objects.all()
     issue_priorities = IssuePriority.objects.all()
     issue_states = IssueState.objects.all()
+    issue_filter_chain = chain(issue_types, issue_priorities, issue_states)
 
     if request.method == 'POST':
         if request.POST['orderby'] in [u for u,v in orderby_choices]:
             usersettings.orderby = request.POST['orderby']
 
-        usersettings.type_filters = UserSettings.FILTERS_ALL_ENABLED
-        for type in issue_types:
-            if 'filter_type#'+str(type.id) not in request.POST:
-                usersettings.disable_filter(type)
-
-        usersettings.priority_filters = UserSettings.FILTERS_ALL_ENABLED
-        for priority in issue_priorities:
-            if 'filter_priority#'+str(priority.id) not in request.POST:
-                usersettings.disable_filter(priority)
-
-        usersettings.state_filters = UserSettings.FILTERS_ALL_ENABLED
-        for state in issue_states:
-            if 'filter_state#'+str(state.id) not in request.POST:
-                usersettings.disable_filter(state)
+        usersettings.reset_filters()
+        for issue_filter in issue_filter_chain:
+            if 'filter_'+ issue_filter.filter_name +'#'+ str(issue_filter.id) not in request.POST:
+                usersettings.disable_filter(issue_filter)
 
         usersettings.save()
+        return redirect(reverse('issues_list'))
 
-    issues = Issue.objects.all()
+    issues = Issue.objects.all().order_by(usersettings.orderby)
+    for issue_filter in issue_filter_chain:
+        if usersettings.filter_disabled(issue_filter):
+            issues = issues.exclude(**{issue_filter.filter_name+'_id': issue_filter.id})
 
     return render_to_response('index.html', {
         'user': request.user,
