@@ -4,6 +4,9 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 from core.models import IssueType, IssueState, IssuePriority
 
+import markdown as Markdown
+import re
+
 register = template.Library()
 
 @register.tag(name='formgroup')
@@ -54,6 +57,23 @@ def verbose_name(model, field_name):
 @register.filter
 def get_attr(obj, attr):
     return getattr(obj, attr)
+
+@register.filter
+def markdown(text):
+    text = Markdown.markdown(text)
+    # We also format links automatically
+    text = re.sub(
+        r'(^|\s)(https?://[^\s"]+)(\s|$)',
+        r'\1<a href="\2">\2</a>\3',
+      text
+    )
+    # And remove <script> tags
+    text = re.sub(
+        r'<script(?:\s[^>]*)?(>(?:.(?!/script>))*</script>|/>)',
+        '', text, flags=re.S
+    )
+
+    return mark_safe(text)
 
 def labelize_type(issue_type, large=False):
     html = '<span class="label label-%(css_class)s"'

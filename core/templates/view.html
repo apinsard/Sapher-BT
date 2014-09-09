@@ -1,6 +1,5 @@
 {# Distributed under the terms of the GNU General Public License v2 #}
 {% extends 'layout.html' %}
-{% load markdown_filters %}
 {% load core_filters %}
 {% load i18n %}
 {% block main %}
@@ -36,7 +35,7 @@
 
   <div class="panel panel-primary">
     <div class="panel-heading">{{ issue|verbose_name:"description"|capfirst }}</div>
-    <div class="panel-body">{{ issue.description|markdown|safe}}</div>
+    <div class="panel-body">{{ issue.description|markdown}}</div>
   </div>
 
   {% if not comment_form.instance.pk %}
@@ -77,7 +76,7 @@
           {% if comment.edited_on %}<i class="pull-right">{{ comment|verbose_name:"edited_on" }} {{ comment.edited_on }}&emsp;</i>{% endif %}
           <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
         </div>
-        <div class="panel-body">{{ comment.content|markdown|safe }}</div>
+        <div class="panel-body">{{ comment.content|markdown }}</div>
       </div>
     {% endif %}
   {% endfor %}
