@@ -214,13 +214,16 @@ class Issue(models.Model):
     )
 
     def __str__(self):
-        return "%s-%d / %s" % (self.project_id, self.id, self.title)
+        return "%s-%d" % (self.project_id, self.id)
 
     def get_absolute_url(self):
         return reverse('view_issue', kwargs={'pid': self.project_id, 'id': str(self.id)})
 
     def get_edit_url(self):
         return reverse('edit_issue', kwargs={'pid': self.project_id, 'id': str(self.id)})
+
+    def log_action(self, user, message):
+        Log.add_entry(message, user.id, self.id)
 
 class Comment(models.Model):
 
@@ -324,4 +327,46 @@ class UserSettings(models.Model):
     def reset_filters(self):
         self.type_filters, self.state_filters, self.priority_filters \
             = (UserSettings.FILTERS_ALL_ENABLED,)*3
+
+class Log(models.Model):
+
+    NEW_ISSUE       = 1
+    EDIT_ISSUE      = 2
+    NEW_COMMENT     = 3
+    EDIT_COMMENT    = 4
+    ATTACH_FILE     = 5,
+
+    MESSAGE_CHOICES = [
+        (NEW_ISSUE       , _("%(user)s created %(issue)s")),
+        (EDIT_ISSUE      , _("%(user)s updated %(issue)s")),
+        (NEW_COMMENT     , _("%(user)s commented %(issue)s")),
+        (EDIT_COMMENT    , _("%(user)s edited a comment on %(issue)s")),
+        (ATTACH_FILE     , _("%(user)s attached a file to %(issue)s")),
+    ]
+
+    user = models.ForeignKey('auth.User',
+        verbose_name = _("user"),
+    )
+
+    issue = models.ForeignKey(Issue,
+        verbose_name = _('issue'),
+    )
+
+    date = models.DateTimeField(
+        verbose_name = _('date'),
+        auto_now_add = True,
+    )
+
+    message = models.PositiveSmallIntegerField(
+        verbose_name = _('message'),
+        choices      = MESSAGE_CHOICES,
+    )
+
+    def __str__(self):
+        return self.get_message_display() % {'user': user, 'issue': issue}
+    
+    @staticmethod
+    def add_entry(msg, usr_id, iss_id):
+        Log(message=msg, user_id=usr_id, issue_id=iss_id).save()
+
 

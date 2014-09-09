@@ -88,6 +88,13 @@ def edit_issue(request, pid=None, id=None):
             if not new_issue.reporter_id:
                 new_issue.reporter_id = request.user.id
             new_issue.save()
+
+            if issue:
+                log_msg = Log.EDIT_ISSUE
+            else:
+                log_msg = Log.NEW_ISSUE
+            new_issue.log_action(request.user, log_msg)
+
             return redirect(new_issue.get_absolute_url())
     else:
         form = IssueForm(instance=issue)
@@ -118,6 +125,13 @@ def view_issue(request, pid, id, cid=None):
             if not new_comment.issue_id:
                 new_comment.issue_id = id
             new_comment.save()
+
+            if comment:
+                log_msg = Log.EDIT_COMMENT
+            else:
+                log_msg = Log.NEW_COMMENT
+            issue.log_action(request.user, log_msg)
+
             return redirect(issue.get_absolute_url())
     else:
         form = CommentForm(instance=comment)

@@ -13,7 +13,6 @@ register = template.Library()
 def do_formgroup(parser, token):
     tag_name, formfield = token.split_contents()
     nodelist = parser.parse(('endformgroup',))
-    print(formfield, nodelist)
     parser.delete_first_token()
     return FormgroupNode(formfield, nodelist)
 
