@@ -4,9 +4,14 @@ from django.core.urlresolvers import reverse
 from django.core.validators import MaxValueValidator, RegexValidator
 from django.utils.translation import ugettext_lazy as _
 
-CSS_CLASS_HELP_TEXT = _('Predefined styles are "default" (gray), "primary" (blue), '\
-    + '"success" (green), "info" (cyan), "warning" (orange) and "danger" (red). '\
-    + 'You can also create your own in your stylesheet.')
+CSS_CLASS_HELP_TEXT = _('Predefined styles are "default" (gray), "primary" (blue), "success" '\
+    + '(green), "info" (cyan), "warning" (orange) and "danger" (red). You can also create your '\
+    + 'own in your stylesheet.')
+
+MARKDOWN_FIELD_HELP_TEXT = _('The text will be formatted in <a target=_blank '\
+    + 'href="http://en.wikipedia.com/wiki/Markdown">Mardown</a>. HTML also supported for advanced '\
+    + 'formatting. A line break behaves the same as a space. Two consecutive line breaks mark a '\
+    + 'new paragraph.')
 
 class IssueType(models.Model):
 
@@ -180,6 +185,7 @@ class Issue(models.Model):
 
     description = models.TextField(
         verbose_name = _("description"),
+        help_text    = MARKDOWN_FIELD_HELP_TEXT,
     )
 
     reporter = models.ForeignKey('auth.User',
@@ -202,6 +208,8 @@ class Issue(models.Model):
     updated_on = models.DateTimeField(
         verbose_name = _("updated on"),
         auto_now     = True,
+        blank        = True,
+        null         = True,
     )
 
     def __str__(self):
@@ -221,34 +229,37 @@ class Comment(models.Model):
 
     author = models.ForeignKey('auth.User',
         verbose_name = _("author"),
-        related_name = 'comments'
+        related_name = 'comments',
     )
 
     issue = models.ForeignKey(Issue,
         verbose_name = _("task"),
-        related_name = 'comments'
+        related_name = 'comments',
     )
 
     content = models.TextField(
-        verbose_name = _("comment")
+        verbose_name = _("comment"),
+        help_text    = MARKDOWN_FIELD_HELP_TEXT,
     )
 
     posted_on = models.DateTimeField(
         verbose_name = _("posted on"),
-        auto_now_add = True
+        auto_now_add = True,
     )
 
     edited_on = models.DateTimeField(
         verbose_name = _("edited on"),
-        auto_now     = True
+        auto_now     = True,
+        blank        = True,
+        null         = True,
     )
 
     def get_edit_url(self):
         return reverse('edit_comment', kwargs={
             'pid' : self.issue.project_id,
             'id'  : str(self.issue_id),
-            'cid' : str(self.id)}
-        ) +'#'+ str(self.id)
+            'cid' : str(self.id),
+        }) +'#'+ str(self.id)
 
 class UserSettings(models.Model):
 
@@ -310,5 +321,6 @@ class UserSettings(models.Model):
             raise TypeError("Unexpected type: %r" % type(issue_filter))
 
     def reset_filters(self):
-        self.type_filters, self.state_filters, self.priority_filters = (UserSettings.FILTERS_ALL_ENABLED,)*3
+        self.type_filters, self.state_filters, self.priority_filters
+            = (UserSettings.FILTERS_ALL_ENABLED,)*3
 

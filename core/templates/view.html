@@ -1,77 +1,81 @@
 {# Distributed under the terms of the GNU General Public License v2 #}
 {% extends 'layout.html' %}
 {% load markdown_filters %}
-{% load issue_filters %}
+{% load core_filters %}
+{% load i18n %}
 {% block main %}
 <div class="block">
-    <div class="page-header">
-        <h1>{{ issue.project_id }}-{{ issue.id }} / <small>{{ issue.title }} <a href="{{ issue.get_edit_url }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a></small></h1>
-    </div>
+  <div class="page-header">
+    <h1>{{ issue.project_id }}-{{ issue.id }} / <small>{{ issue.title }} <a href="{{ issue.get_edit_url }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span> {% trans "Edit" %}</a></small></h1>
+  </div>
 
-    <table id=issue-item class="table table-striped">
-        <tr>
-            <th class='small-col'>Type</th>
-            <td>{{ issue.type|labelize:True }}</td>
-            <th class='small-col'>Priority</th>
-            <td>{{ issue.priority|labelize:True }}</td>
-        </tr>
-        <tr>
-            <th class='small-col'>Created on</th>
-            <td>{{ issue.created_on }}</td>
-            <th class='small-col'>Reporter</th>
-            <td>{{ issue.reporter }}</td>
-        </tr>
-        <tr>
-            <th class='small-col'>Last update on</th>
-            <td>{{ issue.updated_on }}</td>
-            <th class='small-col'>Assignee</th>
-            <td>{{ issue.assignee|default_if_none:"<i>Unassigned</i>" }}</td>
-        </tr>
-        <tr>
-            <th class='small-col'>Progress</th>
-            <td colspan=3>{{ issue.state|labelize:True }}</td>
-        </tr>
-    </table>
+  <table id=issue-item class="table table-striped">
+    <tr>
+      <th class='small-col'>{{ issue|verbose_name:"type"|capfirst }}</th>
+      <td>{{ issue.type|labelize:True }}</td>
+      <th class='small-col'>{{ issue|verbose_name:"priority"|capfirst }}</th>
+      <td>{{ issue.priority|labelize:True }}</td>
+    </tr>
+    <tr>
+      <th class='small-col'>{{ issue|verbose_name:"created_on"|capfirst }}</th>
+      <td>{{ issue.created_on }}</td>
+      <th class='small-col'>{{ issue|verbose_name:"reporter"|capfirst }}</th>
+      <td>{{ issue.reporter }}</td>
+    </tr>
+    <tr>
+      <th class='small-col'>{{ issue|verbose_name:"updated_on"|capfirst }}</th>
+      <td>{{ issue.updated_on }}</td>
+      <th class='small-col'>{{ issue|verbose_name:"assignee"|capfirst }}</th>
+      <td>{% if issue.assignee %} {{ issue.assignee }} {% else %} <i>{% trans "Unassigned" context "issue assigned to nobody" %}</i> {% endif %}</td>
+    </tr>
+    <tr>
+      <th class='small-col'>{{ issue|verbose_name:"state"|capfirst }}</th>
+      <td colspan=3>{{ issue.state|labelize:True }}</td>
+    </tr>
+  </table>
 
-    <div class="panel panel-primary">
-        <div class="panel-heading">Description</div>
-        <div class="panel-body">{{ issue.description|markdown|safe}}</div>
-    </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">{{ issue|verbose_name:"description"|capfirst }}</div>
+    <div class="panel-body">{{ issue.description|markdown|safe}}</div>
+  </div>
 
-    {% if not comment_form.instance.pk %}
+  {% if not comment_form.instance.pk %}
     <form class="panel panel-primary" method=POST>
-        <div class="panel-heading">Déposer un commentaire</div>
-        <div class="panel-body">
-            <textarea name="{{ comment_form.content.name }}" id="id_{{ commment_form.content.name }}" class="form-control"
-                placeholder="Rédigez votre commentaire ici" rows=7></textarea>
-            <p class="help-block">Le texte sera formaté en <a target=_blank href="http://fr.wikipedia.com/wiki/Markdown">Mardown</a>. HTML également autorisé pour un formattage avancé. Un saut à la ligne est équivalent à un espace. Deux sauts à la ligne consécutifs marquent un changement de paragraphe.</p>
-            <button type=submit class="btn btn-primary btn-sm">Déposer</button>
-        </div>
+      {% csrf_token %}
+      <div class="panel-heading">{% trans "Leave a comment" %}</div>
+      <div class="panel-body">
+        <textarea name="{{ comment_form.content.name }}" class="form-control"
+          placeholder="{% trans "Write your comment here..." %}" rows=7></textarea>
+        <p class="help-block">{{ comment_form.content.help_text|safe }}</p>
+        <button type=submit class="btn btn-primary btn-sm">{% trans "Post" context "a comment" %}</button>
+      </div>
     </form>
-    {% endif %}
+  {% endif %}
 
-    {% for comment in comments %}
-        {% if comment.pk == comment_form.instance.pk %}
-        <form class="panel panel-primary" id={{ comment.id }} method=POST>
-            <div class="panel-heading">
-                <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
-            </div>
-            <div class="panel-body">
-                <textarea name="{{ comment_form.content.name }}" id="id_{{ commment_form.content.name }}" class="form-control"
-                    placeholder="Rédigez votre commentaire ici" rows=7>{{ comment_form.content.value }}</textarea>
-                <p class="help-block">Le texte sera formaté en <a target=_blank href="http://fr.wikipedia.com/wiki/Markdown">Mardown</a>. HTML également autorisé pour un formattage avancé. Un saut à la ligne est équivalent à un espace. Deux sauts à la ligne consécutifs marquent un changement de paragraphe.</p>
-                <button type=submit class="btn btn-primary btn-sm">Déposer</button>
-            </div>
-        </form>
-        {% else %}
-        <div class="panel panel-primary" id={{ comment.id }}>
-            <div class="panel-heading">
-                <a class="pull-right" data-toggle=tooltip title="Modifier" href={{ comment.get_edit_url }}><span class="glyphicon glyphicon-pencil"></span></a>
-                <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
-            </div>
-            <div class="panel-body">{{ comment.content|markdown|safe }}</div>
+  {% for comment in comments %}
+    {% if comment.pk == comment_form.instance.pk %}
+      <form class="panel panel-primary" id={{ comment.id }} method=POST>
+        {% csrf_token %}
+        <div class="panel-heading">
+          <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
         </div>
-        {% endif %}
-    {% endfor %}
+        <div class="panel-body">
+          <textarea name="{{ comment_form.content.name }}" class="form-control"
+            placeholder="{% trans "Write your comment here" %}" rows=7>{{ comment_form.content.value }}</textarea>
+          <p class="help-block">{{ comment_form.content.help_text|safe }}</p>
+          <button type=submit class="btn btn-primary btn-sm">{% trans "Edit" %}</button>
+        </div>
+      </form>
+    {% else %}
+      <div class="panel panel-primary" id={{ comment.id }}>
+        <div class="panel-heading">
+          <a class="pull-right" data-toggle=tooltip title="{% trans "Edit" %}" href={{ comment.get_edit_url }}><span class="glyphicon glyphicon-pencil"></span></a>
+          {% if comment.edited_on %}<i class="pull-right">{{ comment|verbose_name:"edited_on" }} {{ comment.edited_on }}&emsp;</i>{% endif %}
+          <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
+        </div>
+        <div class="panel-body">{{ comment.content|markdown|safe }}</div>
+      </div>
+    {% endif %}
+  {% endfor %}
 </div>
 {% endblock %}

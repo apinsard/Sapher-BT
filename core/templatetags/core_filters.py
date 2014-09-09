@@ -25,6 +25,11 @@ def filter_enabled(user_settings, inst):
 def verbose_name(model, field_name):
     return model._meta.get_field(field_name).verbose_name
 
+@register.filter
+def get_attr(obj, attr):
+    return getattr(obj, attr)
+
+
 def labelize_type(issue_type, large=False):
     html = '<span class="label label-%(css_class)s"'
     if not large:
