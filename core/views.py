@@ -90,7 +90,7 @@ def edit_issue(request, pid=None, id=None):
             new_issue.save()
             return redirect(new_issue.get_absolute_url())
     else:
-        form  = IssueForm(instance=issue)
+        form = IssueForm(instance=issue)
 
     return render_to_response('edit.html', {
         'user': request.user,

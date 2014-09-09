@@ -161,6 +161,7 @@ class Issue(models.Model):
 
     project = models.ForeignKey(Project,
         verbose_name = _("project"),
+        default      = 0,
     )
 
     type = models.ForeignKey(IssueType,
@@ -321,6 +322,6 @@ class UserSettings(models.Model):
             raise TypeError("Unexpected type: %r" % type(issue_filter))
 
     def reset_filters(self):
-        self.type_filters, self.state_filters, self.priority_filters
+        self.type_filters, self.state_filters, self.priority_filters \
             = (UserSettings.FILTERS_ALL_ENABLED,)*3
 

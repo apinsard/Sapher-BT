@@ -3,30 +3,48 @@
 {% load core_filters %}
 {% load i18n %}
 {% block main %}
-<form class="block" method="post">
-  <div class="page-header">
-    <h1 class="form-inline">
-      {% if issue %}<a href="{{ issue.get_absolute_url }}">{{ issue.project_id }}-{{ issue.id }}</a>{% else %}{% trans "New issue" %}{% endif %}
-      / <small><input type=text class="form-control input-lg" size=90 name="{{ form.title.name }}" value="{{ form.title.value|default_if_none:"" }}" placeholder="{% trans "Title of the issue" %}"></small></h1>
+<form class=block method=post>
+  {% csrf_token %}
+  <div class=page-header>
+    <h1 class=form-inline>
+      {% if issue %}<a href="{{ issue.get_absolute_url }}">{{ issue.project_id }}-{{ issue.id }}</a>{% else %}{% trans "New issue" %}{% endif %} /
+      <small class=input-group>
+        <span class=input-group-addon>
+          <select name="{{ form.project.name }}" class="input-sm form-control">
+            {% for value, label in  form.project.field.choices %}
+              <option value="{{ value }}" {% if value == form.project.value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </span>
+        {% formgroup form.title %}
+          <input type=text class="form-control input-lg" size=80 name="{{ form.title.name }}" value="{{ form.title.value|default_if_none:"" }}"
+            placeholder="{% trans "Title of the issue" %}">
+        {% endformgroup %}
+      </small>
+    </h1>
   </div>
 
   <table id=issue-item class="table table-striped form-inline">
     <tr>
       <th class='small-col'>{{ form.type.label }}</th>
       <td>
-        <select name="{{ form.type.name }}" class="form-control">
-          {% for value, label in  form.type.field.choices %}
-            <option value="{{ value }}"{% if value == form.type.value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
+        {% formgroup form.type %}
+          <select name="{{ form.type.name }}" class="form-control">
+            {% for value, label in  form.type.field.choices %}
+              <option value="{{ value }}" {% if value == form.type.value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        {% endformgroup %}
       </td>
       <th class='small-col'>{{ form.priority.label }}</th>
       <td>
-        <select name="{{ form.priority.name }}" class="form-control">
-          {% for value, label in  form.priority.field.choices %}
-            <option value="{{ value }}"{% if value == form.priority.value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
+        {% formgroup form.priority %}
+          <select name="{{ form.priority.name }}" class="form-control">
+            {% for value, label in  form.priority.field.choices %}
+              <option value="{{ value }}" {% if value == form.priority.value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        {% endformgroup %}
       </td>
     </tr>
     <tr>
@@ -40,20 +58,24 @@
       <td>{% if issue.updated_on %}{{ issue.updated_on }}{% else %}<i>{% trans "Never" %}</i>{% endif %}</td>
       <th class='small-col'>{{ form.assignee.label }}</th>
       <td>
-        <select name="{{ form.assignee.name }}" class="form-control">
-          {% for value, label in  form.assignee.field.choices %}
-            <option value="{{ value }}"{% if value == form.assignee.value %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
+        {% formgroup form.assignee %}
+          <select name="{{ form.assignee.name }}" class="form-control">
+            {% for value, label in  form.assignee.field.choices %}
+              <option value="{{ value }}" {% if value == form.assignee.value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        {% endformgroup %}
       </td>
     </tr>
     <th class='small-col'>{{ form.state.label }}</th>
     <td colspan=3>
-      <select name="{{ form.state.name }}" class="form-control">
-        {% for value ,label in  form.state.field.choices %}
-          <option value="{{ value }}"{% if value == form.state.value %}selected{% endif %}>{{ label }}</option>
-        {% endfor %}
-      </select>
+      {% formgroup form.state %}
+        <select name="{{ form.state.name }}" class="form-control">
+          {% for value ,label in  form.state.field.choices %}
+            <option value="{{ value }}" {% if value == form.state.value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      {% endformgroup %}
     </td>
   </table>
 
@@ -61,7 +83,10 @@
     <div class="panel-heading">{% trans "description"|capfirst %}</div>
     <div class="panel-body">
       <p class="help-block">{{ form.description.help_text|safe }}</p>
-      <textarea name="{{ form.description.name }}" class="form-control" placeholder="{% trans "Describe the issue here..." %}" rows=20>{{ form.description.value|default_if_none:"" }}</textarea>
+      {% formgroup form.description %}
+        <textarea name="{{ form.description.name }}" class="form-control" placeholder="{% trans "Describe the issue here..." %}"
+          rows=20>{{ form.description.value|default_if_none:"" }}</textarea>
+      {% endformgroup %}
     </div>
   </div>
 

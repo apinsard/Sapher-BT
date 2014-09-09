@@ -1,9 +1,35 @@
 # Distributed under the terms of the GNU General Public License v2
 from django import template
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
 from core.models import IssueType, IssueState, IssuePriority
 
 register = template.Library()
+
+@register.tag(name='formgroup')
+def do_formgroup(parser, token):
+    tag_name, formfield = token.split_contents()
+    nodelist = parser.parse(('endformgroup',))
+    print(formfield, nodelist)
+    parser.delete_first_token()
+    return FormgroupNode(formfield, nodelist)
+
+class FormgroupNode(template.Node):
+    
+    def __init__(self, formfield, nodelist):
+        self.formfield = template.Variable(formfield)
+        self.nodelist = nodelist
+
+    def render(self, context):
+        formfield = self.formfield.resolve(context)
+        output = self.nodelist.render(context)
+        title = _("error").capitalize()
+        if formfield.errors:
+            output = '<div class="form-group has-error has-feedback">'+ output \
+                + '<span class="glyphicon glyphicon-remove form-control-feedback" '\
+                + 'data-toggle="popover" title="'+ title +'" data-container="body" '\
+                + 'data-content="'+str(formfield.errors[0])+'"></span></div>'
+        return output
 
 @register.filter
 def labelize(inst, large=False):
@@ -28,7 +54,6 @@ def verbose_name(model, field_name):
 @register.filter
 def get_attr(obj, attr):
     return getattr(obj, attr)
-
 
 def labelize_type(issue_type, large=False):
     html = '<span class="label label-%(css_class)s"'

@@ -44,9 +44,11 @@
       {% csrf_token %}
       <div class="panel-heading">{% trans "Leave a comment" %}</div>
       <div class="panel-body">
-        <textarea name="{{ comment_form.content.name }}" class="form-control"
-          placeholder="{% trans "Write your comment here..." %}" rows=7></textarea>
-        <p class="help-block">{{ comment_form.content.help_text|safe }}</p>
+        {% formgroup comment_form.content %}
+          <textarea name="{{ comment_form.content.name }}" class="form-control"
+            placeholder="{% trans "Write your comment here..." %}" rows=7></textarea>
+        {% endformgroup %}
+          <p class="help-block">{{ comment_form.content.help_text|safe }}</p>
         <button type=submit class="btn btn-primary btn-sm">{% trans "Post" context "a comment" %}</button>
       </div>
     </form>
@@ -60,8 +62,10 @@
           <span class="glyphicon glyphicon-comment"></span>&ensp;<a href=#{{ comment.id }}>{{ comment.author }}, {{ comment.posted_on }}</a>
         </div>
         <div class="panel-body">
-          <textarea name="{{ comment_form.content.name }}" class="form-control"
-            placeholder="{% trans "Write your comment here" %}" rows=7>{{ comment_form.content.value }}</textarea>
+          {% formgroup comment_form.content %}
+            <textarea name="{{ comment_form.content.name }}" class="form-control"
+              placeholder="{% trans "Write your comment here" %}" rows=7>{{ comment_form.content.value }}</textarea>
+          {% endformgroup %}
           <p class="help-block">{{ comment_form.content.help_text|safe }}</p>
           <button type=submit class="btn btn-primary btn-sm">{% trans "Edit" %}</button>
         </div>
