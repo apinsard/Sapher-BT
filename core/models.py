@@ -330,6 +330,11 @@ class UserSettings(models.Model):
 
 class Log(models.Model):
 
+    class Meta:
+        verbose_name = _('log')
+        verbose_name_plural = _('logs')
+        ordering = ['-date']
+
     NEW_ISSUE       = 1
     EDIT_ISSUE      = 2
     NEW_COMMENT     = 3
@@ -363,7 +368,7 @@ class Log(models.Model):
     )
 
     def __str__(self):
-        return self.get_message_display() % {'user': user, 'issue': issue}
+        return self.get_message_display() % {'user': self.user, 'issue': self.issue}
     
     @staticmethod
     def add_entry(msg, usr_id, iss_id):

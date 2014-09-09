@@ -46,6 +46,8 @@ def home(request):
     issue_states = IssueState.objects.all()
     issue_filter_chain = chain(issue_types, issue_priorities, issue_states)
 
+    logs = Log.objects.all()[:30]
+
     if request.method == 'POST':
         if request.POST['orderby'] in [u for u,v in orderby_choices]:
             usersettings.orderby = request.POST['orderby']
@@ -71,6 +73,7 @@ def home(request):
         'issue_states': issue_states,
         'usersettings': usersettings,
         'orderby_choices': orderby_choices,
+        'logs': logs,
     }, RequestContext(request))
 
 def edit_issue(request, pid=None, id=None):
