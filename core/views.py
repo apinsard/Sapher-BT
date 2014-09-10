@@ -46,8 +46,6 @@ def home(request):
     issue_states = IssueState.objects.all()
     issue_filter_chain = chain(issue_types, issue_priorities, issue_states)
 
-    logs = Log.objects.all()[:30]
-
     if request.method == 'POST':
         if request.POST['orderby'] in [u for u,v in orderby_choices]:
             usersettings.orderby = request.POST['orderby']
@@ -64,6 +62,8 @@ def home(request):
     for issue_filter in issue_filter_chain:
         if usersettings.filter_disabled(issue_filter):
             issues = issues.exclude(**{issue_filter.filter_name+'_id': issue_filter.id})
+
+    logs = Log.objects.all()[:30]
 
     return render_to_response('index.html', {
         'user': request.user,
@@ -139,10 +139,13 @@ def view_issue(request, pid, id, cid=None):
     else:
         form = CommentForm(instance=comment)
 
+    logs = Log.objects.filter(issue_id=issue.id)[:30]
+
     return render_to_response('view.html', {
         'user': request.user,
         'issue': issue,
         'comments': comments,
-        'comment_form': form
+        'comment_form': form,
+        'logs': logs,
     }, RequestContext(request))
 
