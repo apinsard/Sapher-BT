@@ -1,0 +1,350 @@
+# Distributed under the terms of the GNU General Public License v2
+# Antoine Pinsard <antoine.pinsard@aladom.fr>, 2014.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 9999\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-09-12 18:20+0200\n"
+"PO-Revision-Date: 2014-09-12 17:51+0200\n"
+"Last-Translator: Antoine Pinsard <antoine.pinsard@aladom.fr>\n"
+"Language-Team: None\n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: core/models.py:7
+msgid ""
+"Predefined styles are \"default\" (gray), \"primary\" (blue), \"success"
+"\" (green), \"info\" (cyan), \"warning\" (orange) and \"danger\" (red). You "
+"can also create your own in your stylesheet."
+msgstr ""
+"Les styles prédéfinis sont \"default\" (gris), \"primary\" (bleu), \"success"
+"\" (vert), \"info\" (cyan), \"warning\" (orange) et \"danger\" (rouge). Vous "
+"pouvez aussi créer les votres dans votre feuille de style."
+
+#: core/models.py:11
+msgid ""
+"The text will be formatted in <a target=_blank href=\"http://en.wikipedia."
+"org/wiki/Markdown\">Mardown</a>. HTML also supported for advanced "
+"formatting. A line break behaves the same as a space. Two consecutive line "
+"breaks mark a new paragraph."
+msgstr ""
+"Le texte sera formaté en <a target=_blank href=\"http://fr.wikipedia.orgorg/"
+"wiki/Markdown\">Mardown</a>. Le HTML est aussi supporté pour un formatage "
+"avancé. Un saut de ligne est considéré comme un espace. Deux sauts de ligne "
+"consécutifs marquent un nouveau paragraphe."
+
+#: core/models.py:19 core/models.py:168
+msgid "type"
+msgstr "type"
+
+#: core/models.py:20
+msgid "types"
+msgstr "types"
+
+#: core/models.py:26 core/models.py:65 core/models.py:104 core/models.py:139
+msgid "ID"
+msgstr "ID"
+
+#: core/models.py:29
+msgid "This ID will be used by `UserSettings.type_filters` as 2^(ID)."
+msgstr "Cet ID sera utilisé par `UserSettings.type_filters` avec 2^(ID)."
+
+#: core/models.py:33 core/models.py:72 core/models.py:111 core/models.py:147
+msgid "name"
+msgstr "nom"
+
+#: core/models.py:39
+msgid "CSS class (label-)"
+msgstr "classe CSS (label-)"
+
+#: core/models.py:46 core/models.py:117
+msgid "glyphicon"
+msgstr "glyphicon"
+
+#: core/models.py:49 core/models.py:120
+msgid "See http://getbootstrap.com/components/#glyphicons"
+msgstr "Voir http://getbootstrap.com/components/#glyphicons"
+
+#: core/models.py:58
+msgid "state of progress"
+msgstr "état d'avancement"
+
+#: core/models.py:59
+msgid "states of progress"
+msgstr "états d'avancement"
+
+#: core/models.py:68
+msgid "This ID will be used by `UserSettings.state_filters` as 2^(ID)."
+msgstr "Cet ID sera utilisé par `UserSettings.state_filters` avec 2^(ID)."
+
+#: core/models.py:78
+msgid "CSS class (progress-bar-)"
+msgstr "classe CSS (progress-bar-)"
+
+#: core/models.py:85
+msgid "progression"
+msgstr "avancement"
+
+#: core/models.py:88
+msgid "Between 0 and 100."
+msgstr "Entre 0 et 100"
+
+#: core/models.py:97
+msgid "priority level"
+msgstr "niveau de priorité"
+
+#: core/models.py:98
+msgid "priority levels"
+msgstr "niveaux de priorité"
+
+#: core/models.py:107
+msgid "This ID will be used by `UserSettings.priority_filters` as 2^(ID)."
+msgstr "Cet ID sera utilisé par `UserSettings.priority_filters` avec 2^(ID)."
+
+#: core/models.py:126
+msgid "The higher number, the higher priority."
+msgstr "Le plus grand nombre a la plus haute priorité"
+
+#: core/models.py:135 core/models.py:163
+msgid "project"
+msgstr "projet"
+
+#: core/models.py:136
+msgid "projects"
+msgstr "projets"
+
+#: core/models.py:143
+msgid "Two or three uppercase letters to quickly identify this project"
+msgstr "Deux ou trois lettres majuscules pour identifier rapidement ce projet"
+
+#: core/models.py:158 core/models.py:240 core/models.py:357
+msgid "issue"
+msgstr "tâche"
+
+#: core/models.py:159
+msgid "issues"
+msgstr "tâches"
+
+#: core/models.py:173
+msgid "state"
+msgstr "état"
+
+#: core/models.py:178
+msgid "priority"
+msgstr "priorité"
+
+#: core/models.py:183
+msgid "title"
+msgstr "titre"
+
+#: core/models.py:188 core/templates/edit.html:83
+msgid "description"
+msgstr "description"
+
+#: core/models.py:193 core/templates/edit.html:53
+msgid "reporter"
+msgstr "relevé par"
+
+#: core/models.py:198
+msgid "assignee"
+msgstr "assigné à"
+
+#: core/models.py:205 core/templates/edit.html:51
+msgid "created on"
+msgstr "créée le"
+
+#: core/models.py:210
+msgid "updated on"
+msgstr "modifiée le"
+
+#: core/models.py:231 core/models.py:245
+msgid "comment"
+msgstr "commentaire"
+
+#: core/models.py:232
+msgid "comments"
+msgstr "commentaires"
+
+#: core/models.py:235
+msgid "author"
+msgstr "auteur"
+
+#: core/models.py:250
+msgid "posted on"
+msgstr "posté le"
+
+#: core/models.py:255 core/templates/edit.html:57
+msgid "edited on"
+msgstr "modifié le"
+
+#: core/models.py:271
+msgid "Descending priority level"
+msgstr "Niveau de priorité décroissant"
+
+#: core/models.py:272
+msgid "Ascending priority level"
+msgstr "Niveau de priorité croissant"
+
+#: core/models.py:273
+msgid "Descending state progression"
+msgstr "État d'avancement décroissant"
+
+#: core/models.py:274
+msgid "Ascending state progression"
+msgstr "État d'avancement croissant"
+
+#: core/models.py:282
+msgid "type filters"
+msgstr "filtres de type"
+
+#: core/models.py:287
+msgid "state filters"
+msgstr "filtres d'état"
+
+#: core/models.py:292
+msgid "priority filters"
+msgstr "filtres de priorité"
+
+#: core/models.py:297
+msgid "sort by"
+msgstr "trier par"
+
+#: core/models.py:334
+msgid "log"
+msgstr "log"
+
+#: core/models.py:335
+msgid "logs"
+msgstr "logs"
+
+#: core/models.py:345
+#, python-format
+msgid "%(user)s created %(issue)s"
+msgstr "%(user)s a créé %(issue)s"
+
+#: core/models.py:346
+#, python-format
+msgid "%(user)s updated %(issue)s"
+msgstr "%(user)s a modifié %(issue)s"
+
+#: core/models.py:347
+#, python-format
+msgid "%(user)s commented %(issue)s"
+msgstr "%(user)s a commenté %(issue)s"
+
+#: core/models.py:348
+#, python-format
+msgid "%(user)s edited a comment on %(issue)s"
+msgstr "%(user)s a modifié un commentaire sur %(issue)s"
+
+#: core/models.py:349
+#, python-format
+msgid "%(user)s attached a file to %(issue)s"
+msgstr "%(user)s a attaché un fichier à %(issue)s"
+
+#: core/models.py:353
+msgid "user"
+msgstr "utilisateur"
+
+#: core/models.py:361
+msgid "date"
+msgstr "date"
+
+#: core/models.py:366
+msgid "message"
+msgstr "message"
+
+#: core/templates/edit.html:10
+msgid "New issue"
+msgstr "Nouvelle tâche"
+
+#: core/templates/edit.html:21
+msgid "Title of the issue"
+msgstr "Titre de la tâche"
+
+#: core/templates/edit.html:52 core/templates/edit.html.py:58
+msgid "Never"
+msgstr "Jamais"
+
+#: core/templates/edit.html:87
+msgid "Describe the issue here..."
+msgstr "Décrivez la tâche ici..."
+
+#: core/templates/edit.html:93
+msgid "Save"
+msgstr "Enregistrer"
+
+#: core/templates/index.html:23
+msgid "Filter by"
+msgstr "Filtrer par"
+
+#: core/templates/index.html:57
+msgctxt "a modification"
+msgid "Apply"
+msgstr "Appliquer"
+
+#: core/templates/index.html:63
+msgctxt "shortcut for 'Type' column in the listing"
+msgid "T"
+msgstr "T"
+
+#: core/templates/index.html:64
+msgctxt "shortcut for 'Priority' column in the listing"
+msgid "P"
+msgstr "P"
+
+#: core/templates/index.html:74 core/templates/view.html:29
+msgctxt "issue assigned to nobody"
+msgid "Unassigned"
+msgstr "Personne"
+
+#: core/templates/index.html:83 core/templates/view.html:88
+msgid "Latest Activity"
+msgstr "Activité récente"
+
+#: core/templates/layout.html:25 core/templates/login.html:18
+msgid "Toggle navigation"
+msgstr "Afficher/Masquer le menu"
+
+#: core/templates/layout.html:35
+msgid "New Issue"
+msgstr "Nouvelle tâche"
+
+#: core/templates/login.html:29
+msgid "username"
+msgstr "nom d'utilisateur"
+
+#: core/templates/login.html:30
+msgid "password"
+msgstr "mot de passe"
+
+#: core/templates/login.html:31
+msgid "sign in"
+msgstr "connexion"
+
+#: core/templates/view.html:9 core/templates/view.html.py:70
+#: core/templates/view.html:76
+msgid "Edit"
+msgstr "Modifier"
+
+#: core/templates/view.html:45
+msgid "Leave a comment"
+msgstr "Laisser un commentaire"
+
+#: core/templates/view.html:49 core/templates/view.html.py:67
+msgid "Write your comment here..."
+msgstr "Écrivez votre commentaire ici..."
+
+#: core/templates/view.html:52
+msgctxt "a comment"
+msgid "Post"
+msgstr "Déposer"
+
+#: core/templatetags/core_filters.py:28
+msgid "error"
+msgstr "erreur"

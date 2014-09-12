@@ -9,7 +9,7 @@ CSS_CLASS_HELP_TEXT = _('Predefined styles are "default" (gray), "primary" (blue
     + 'own in your stylesheet.')
 
 MARKDOWN_FIELD_HELP_TEXT = _('The text will be formatted in <a target=_blank '\
-    + 'href="http://en.wikipedia.com/wiki/Markdown">Mardown</a>. HTML also supported for advanced '\
+    + 'href="http://en.wikipedia.org/wiki/Markdown">Mardown</a>. HTML also supported for advanced '\
     + 'formatting. A line break behaves the same as a space. Two consecutive line breaks mark a '\
     + 'new paragraph.')
 
@@ -237,7 +237,7 @@ class Comment(models.Model):
     )
 
     issue = models.ForeignKey(Issue,
-        verbose_name = _("task"),
+        verbose_name = _("issue"),
         related_name = 'comments',
     )
 

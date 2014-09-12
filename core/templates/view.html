@@ -64,7 +64,7 @@
           <div class="panel-body">
             {% formgroup comment_form.content %}
               <textarea name="{{ comment_form.content.name }}" class="form-control"
-                placeholder="{% trans "Write your comment here" %}" rows=7>{{ comment_form.content.value }}</textarea>
+                placeholder="{% trans "Write your comment here..." %}" rows=7>{{ comment_form.content.value }}</textarea>
             {% endformgroup %}
             <p class="help-block">{{ comment_form.content.help_text|safe }}</p>
             <button type=submit class="btn btn-primary btn-sm">{% trans "Edit" %}</button>
