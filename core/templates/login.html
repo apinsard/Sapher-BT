@@ -26,6 +26,7 @@
   </nav>
   <main class="container-fluid">
   <form class="block form-inline" method="post">
+    {% csrf_token %}
     <input type=text name=username class="form-control" placeholder="{% trans "username"|capfirst %}">
     <input type=password name=password class="form-control" placeholder="{% trans "password"|capfirst %}">
     <button type=submit class="btn btn-primary btn-md">{% trans "sign in"|capfirst %}</button>
