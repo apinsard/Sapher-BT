@@ -57,20 +57,27 @@ def verbose_name(model, field_name):
 def get_attr(obj, attr):
     return getattr(obj, attr)
 
+CVS_REPO_URL = "https://xp-dev.com/sc/change/160109/"
+
 @register.filter
 def markdown(text):
-    text = Markdown.markdown(text)
-    # We also format links automatically
-    text = re.sub(
-        r'(^|\s)(https?://[^\s"]+)(\s|$)',
-        r'\1<a href="\2">\2</a>\3',
-      text
-    )
+    replacements = [
+        # Format links automatically
+        (r'(^|\s)(https?://[^\s"]+)(\s|$)', r'\1<a href="\2">\2</a>\3'),
+        (r'\[\[Commit:([A-Za-z0-9]+)\]\]', 
+            r'*'+ _("Associated commit:") +r' [\1]('+ CVS_REPO_URL+r'\1)*'),
+        (r'\[\[Issue:([A-Z]{2,3}-[0-9]+)\]\]', r' [\1](/issues/\1/)'),
+        (r'\[\[Issue:([A-Z]{2,3}-[0-9]+)#([0-9]+)\]\]', r' [\1](/issues/\1/#\2)'),
+    ]
+    for k,v in replacements:
+        text = re.sub(k,v,text)
+
     # And remove <script> tags
     text = re.sub(
         r'<script(?:\s[^>]*)?(>(?:.(?!/script>))*</script>|/>)',
         '', text, flags=re.S
     )
+    text = Markdown.markdown(text)
 
     return mark_safe(text)
 

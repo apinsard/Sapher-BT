@@ -70,7 +70,7 @@
         <tr>
           <td>{{ issue.type|labelize }}</td>
           <td>{{ issue.priority|labelize }}</td>
-          <td><a href="{{ issue.get_absolute_url }}"><b>ALA-{{ issue.id }} /</b> {{ issue.title }}</a></td>
+          <td><a href="{{ issue.get_absolute_url }}"><b>{{ issue.project_id }}-{{ issue.id }} /</b> {{ issue.title }}</a></td>
           <td>{% if issue.assignee %} {{ issue.assignee }} {% else %} <i>{% trans "Unassigned" context "issue assigned to nobody" %}</i> {% endif %}</td>
           <td>{{ issue.state|labelize }}</td>
         </tr>
