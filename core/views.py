@@ -72,7 +72,7 @@ def home(request):
         'issue_states': issue_states,
         'usersettings': usersettings,
         'orderby_choices': orderby_choices,
-        'checks': Check.objects.filter(requested_id=request.user.id),
+        'checks': Check.objects.filter(requested_id=request.user.id).order_by('-requested_on')[:30],
     }, RequestContext(request))
 
 def edit_issue(request, pid=None, id=None):
