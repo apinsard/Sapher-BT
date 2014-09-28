@@ -71,6 +71,7 @@ def home(request):
         'issue_states': issue_states,
         'usersettings': usersettings,
         'orderby_choices': orderby_choices,
+        'checks': Check.objects.filter(requested_id=request.user.id),
     }, RequestContext(request))
 
 def edit_issue(request, pid=None, id=None):
@@ -110,24 +111,34 @@ def view_issue(request, pid, id, cid=None):
     if cid:
         comment = issue.comments.get(pk=cid)
 
-    if request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            new_comment = form.save(commit=False)
-            if not new_comment.author_id:
-                new_comment.author_id = request.user.id
-            if not new_comment.issue_id:
-                new_comment.issue_id = id
-            new_comment.save()
+    comment_form = CommentForm(instance=comment)
+    check_form   = CheckForm()
 
-            return redirect(issue.get_absolute_url())
-    else:
-        form = CommentForm(instance=comment)
+    if request.method == 'POST':
+        if 'comment_form' in request.POST:
+            comment_form = CommentForm(request.POST, instance=comment)
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                if not new_comment.author_id:
+                    new_comment.author_id = request.user.id
+                if not new_comment.issue_id:
+                    new_comment.issue_id = id
+                new_comment.save()
+
+                return redirect(issue.get_absolute_url())
+        elif 'check_form' in request.POST:
+            check_form = CheckForm(request.POST)
+            if check_form.is_valid():
+                new_check = check_form.save(commit=False)
+                new_check.requester_id = request.user.id
+                new_check.issue_id = id
+                new_check.save()
 
     return render_to_response('view.html', {
         'user': request.user,
         'issue': issue,
         'comments': comments,
-        'comment_form': form,
+        'comment_form': comment_form,
+        'check_form': check_form,
     }, RequestContext(request))
 

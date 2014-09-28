@@ -13,3 +13,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+
+class CheckForm(forms.ModelForm):
+
+    class Meta:
+        model = Check
+        fields = ['requested', 'comment', 'message']

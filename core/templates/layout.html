@@ -13,8 +13,22 @@
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script>
       $(function() {
+        // Autoload tooltips and popovers
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
+
+        // Disable location change on "js links"
+        $('a[href=#]').click(function(event){event.preventDefault();});
+        
+        // Set the comment id on check requests form
+        $('[data-target=#checkFormModal]').click(function() {
+          var cid = $(this).attr('data-comment-id') || ""
+          $('#checkForm_comment').val(cid);
+        });
+
+        // Highlight the element that is underlied by the location hash
+        $(document.location.hash).addClass("active-focus")
+
       });
     </script>
   </head>

@@ -14,3 +14,7 @@ main { margin-bottom: 20px; }
 .panel.panel-primary .panel-heading a { color: #fff; }
 
 .form-control-feedback { cursor: pointer; }
+
+.active-focus {
+  box-shadow: 0 0 15px 5px #428BAC;
+}

@@ -334,12 +334,12 @@ class UserSettings(models.Model):
 class Check(models.Model):
 
     requester = models.ForeignKey('auth.User',
-        verbose_name = _('requester'),
+        verbose_name = _('sender'),
         related_name = 'checks_sent',
     )
 
     requested = models.ForeignKey('auth.User',
-        verbose_name = _('requested'),
+        verbose_name = _('recipient'),
         related_name = 'checks_received',
     )
 
@@ -350,12 +350,12 @@ class Check(models.Model):
 
     comment = models.ForeignKey(Comment,
         verbose_name = _('comment'),
-        related_name = 'checks+',
+        related_name = 'checks',
         blank        = True,
         null         = True,
     )
 
-    date = models.DateTimeField(
+    requested_on = models.DateTimeField(
         verbose_name = _("date"),
         auto_now_add = True,
     )
@@ -366,8 +366,14 @@ class Check(models.Model):
         max_length   = 255,
     )
 
+    is_unread = models.BooleanField(
+        verbose_name = _("read"),
+        default      = True,
+    )
+
     def __str__(self):
-        return '[%s] %s &gt; %s (%s)' % (self.issue, self.requester, self.requested, self.date)
+        return '[%s] %s &gt; %s (%s)' % (self.issue, self.requester, self.requested,
+                self.requested_on)
 
     def get_absolute_url(self):
         if self.comment:

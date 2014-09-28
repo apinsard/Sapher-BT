@@ -31,6 +31,8 @@ class FormgroupNode(template.Node):
                 + '<span class="glyphicon glyphicon-remove form-control-feedback" '\
                 + 'data-toggle="popover" title="'+ title +'" data-container="body" '\
                 + 'data-content="'+str(formfield.errors[0])+'"></span></div>'
+        else:
+            output = '<div class="form-group">'+ output +"</div>"
         return output
 
 @register.filter
