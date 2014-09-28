@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 9999\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-12 18:20+0200\n"
+"POT-Creation-Date: 2014-09-28 16:29+0200\n"
 "PO-Revision-Date: 2014-09-12 17:51+0200\n"
-"Last-Translator: Antoine Pinsard <antoine.pinsard@aladom.fr>\n"
+"Last-Translator: Antoine Pinsard <antoine.pinsard@gmail.com>\n"
 "Language-Team: None\n"
 "Language: French\n"
 "MIME-Version: 1.0\n"
@@ -122,7 +122,7 @@ msgstr "projets"
 msgid "Two or three uppercase letters to quickly identify this project"
 msgstr "Deux ou trois lettres majuscules pour identifier rapidement ce projet"
 
-#: core/models.py:158 core/models.py:240 core/models.py:357
+#: core/models.py:158 core/models.py:237 core/models.py:347
 msgid "issue"
 msgstr "tâche"
 
@@ -162,102 +162,81 @@ msgstr "créée le"
 msgid "updated on"
 msgstr "modifiée le"
 
-#: core/models.py:231 core/models.py:245
+#: core/models.py:228 core/models.py:242 core/models.py:352
 msgid "comment"
 msgstr "commentaire"
 
-#: core/models.py:232
+#: core/models.py:229
 msgid "comments"
 msgstr "commentaires"
 
-#: core/models.py:235
+#: core/models.py:232
 msgid "author"
 msgstr "auteur"
 
-#: core/models.py:250
+#: core/models.py:247
 msgid "posted on"
 msgstr "posté le"
 
-#: core/models.py:255 core/templates/edit.html:57
+#: core/models.py:252 core/templates/edit.html:57
 msgid "edited on"
 msgstr "modifié le"
 
-#: core/models.py:271
+#: core/models.py:274
 msgid "Descending priority level"
 msgstr "Niveau de priorité décroissant"
 
-#: core/models.py:272
+#: core/models.py:275
 msgid "Ascending priority level"
 msgstr "Niveau de priorité croissant"
 
-#: core/models.py:273
+#: core/models.py:276
 msgid "Descending state progression"
 msgstr "État d'avancement décroissant"
 
-#: core/models.py:274
+#: core/models.py:277
 msgid "Ascending state progression"
 msgstr "État d'avancement croissant"
 
-#: core/models.py:282
+#: core/models.py:285
 msgid "type filters"
 msgstr "filtres de type"
 
-#: core/models.py:287
+#: core/models.py:290
 msgid "state filters"
 msgstr "filtres d'état"
 
-#: core/models.py:292
+#: core/models.py:295
 msgid "priority filters"
 msgstr "filtres de priorité"
 
-#: core/models.py:297
+#: core/models.py:300
 msgid "sort by"
 msgstr "trier par"
 
-#: core/models.py:334
-msgid "log"
-msgstr "log"
+#: core/models.py:337
+msgid "sender"
+msgstr "expéditeur"
 
-#: core/models.py:335
-msgid "logs"
-msgstr "logs"
+#: core/models.py:342
+msgid "recipient"
+msgstr "destinataire"
 
-#: core/models.py:345
-#, python-format
-msgid "%(user)s created %(issue)s"
-msgstr "%(user)s a créé %(issue)s"
-
-#: core/models.py:346
-#, python-format
-msgid "%(user)s updated %(issue)s"
-msgstr "%(user)s a modifié %(issue)s"
-
-#: core/models.py:347
-#, python-format
-msgid "%(user)s commented %(issue)s"
-msgstr "%(user)s a commenté %(issue)s"
-
-#: core/models.py:348
-#, python-format
-msgid "%(user)s edited a comment on %(issue)s"
-msgstr "%(user)s a modifié un commentaire sur %(issue)s"
-
-#: core/models.py:349
-#, python-format
-msgid "%(user)s attached a file to %(issue)s"
-msgstr "%(user)s a attaché un fichier à %(issue)s"
-
-#: core/models.py:353
-msgid "user"
-msgstr "utilisateur"
-
-#: core/models.py:361
+#: core/models.py:359
 msgid "date"
 msgstr "date"
 
-#: core/models.py:366
+#: core/models.py:364
 msgid "message"
 msgstr "message"
+
+#: core/models.py:370
+msgid "read"
+msgstr "lu"
+
+#: core/models.py:388 core/templates/view.html:127
+msgid "Can you please check this out?"
+msgstr "Peux-tu checker ça ?"
 
 #: core/templates/edit.html:10
 msgid "New issue"
@@ -298,53 +277,101 @@ msgctxt "shortcut for 'Priority' column in the listing"
 msgid "P"
 msgstr "P"
 
-#: core/templates/index.html:74 core/templates/view.html:29
+#: core/templates/index.html:74 core/templates/view.html:33
 msgctxt "issue assigned to nobody"
 msgid "Unassigned"
 msgstr "Personne"
 
-#: core/templates/index.html:83 core/templates/view.html:88
-msgid "Latest Activity"
-msgstr "Activité récente"
+#: core/templates/index.html:83 core/templates/view.html:97
+msgid "Things to check out"
+msgstr "À checker"
 
-#: core/templates/layout.html:25 core/templates/login.html:18
+#: core/templates/layout.html:39 core/templates/login.html:18
 msgid "Toggle navigation"
 msgstr "Afficher/Masquer le menu"
 
-#: core/templates/layout.html:35
+#: core/templates/layout.html:49
 msgid "New Issue"
 msgstr "Nouvelle tâche"
 
-#: core/templates/login.html:29
+#: core/templates/login.html:30
 msgid "username"
 msgstr "nom d'utilisateur"
 
-#: core/templates/login.html:30
+#: core/templates/login.html:31
 msgid "password"
 msgstr "mot de passe"
 
-#: core/templates/login.html:31
+#: core/templates/login.html:32
 msgid "sign in"
 msgstr "connexion"
 
-#: core/templates/view.html:9 core/templates/view.html.py:70
-#: core/templates/view.html:76
+#: core/templates/view.html:11 core/templates/view.html.py:69
+#: core/templates/view.html:112
+msgid "Send a check"
+msgstr "Envoyer un check"
+
+#: core/templates/view.html:13 core/templates/view.html.py:59
+#: core/templates/view.html:67
 msgid "Edit"
 msgstr "Modifier"
 
-#: core/templates/view.html:45
-msgid "Leave a comment"
-msgstr "Laisser un commentaire"
-
-#: core/templates/view.html:49 core/templates/view.html.py:67
+#: core/templates/view.html:56 core/templates/view.html.py:86
 msgid "Write your comment here..."
 msgstr "Écrivez votre commentaire ici..."
 
-#: core/templates/view.html:52
+#: core/templates/view.html:82
+msgid "Leave a comment"
+msgstr "Laisser un commentaire"
+
+#: core/templates/view.html:89
 msgctxt "a comment"
 msgid "Post"
 msgstr "Déposer"
 
+#: core/templates/view.html:111
+msgid "Close"
+msgstr "Fermer"
+
+#: core/templates/view.html:132
+msgid "Cancel"
+msgstr "Annuler"
+
+#: core/templates/view.html:133
+msgid "Send"
+msgstr "Envoyer"
+
 #: core/templatetags/core_filters.py:28
 msgid "error"
 msgstr "erreur"
+
+#: core/templatetags/core_filters.py:70
+msgid "Associated commit:"
+msgstr "Commit associé: "
+
+#~ msgid "log"
+#~ msgstr "log"
+
+#~ msgid "logs"
+#~ msgstr "logs"
+
+#~ msgid "%(user)s created %(issue)s"
+#~ msgstr "%(user)s a créé %(issue)s"
+
+#~ msgid "%(user)s updated %(issue)s"
+#~ msgstr "%(user)s a modifié %(issue)s"
+
+#~ msgid "%(user)s commented %(issue)s"
+#~ msgstr "%(user)s a commenté %(issue)s"
+
+#~ msgid "%(user)s edited a comment on %(issue)s"
+#~ msgstr "%(user)s a modifié un commentaire sur %(issue)s"
+
+#~ msgid "%(user)s attached a file to %(issue)s"
+#~ msgstr "%(user)s a attaché un fichier à %(issue)s"
+
+#~ msgid "user"
+#~ msgstr "utilisateur"
+
+#~ msgid "Latest Activity"
+#~ msgstr "Activité récente"
