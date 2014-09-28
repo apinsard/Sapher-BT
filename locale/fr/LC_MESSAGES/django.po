@@ -1,12 +1,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # Antoine Pinsard <antoine.pinsard@aladom.fr>, 2014.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 9999\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-28 16:29+0200\n"
+"POT-Creation-Date: 2014-09-28 16:34+0200\n"
 "PO-Revision-Date: 2014-09-12 17:51+0200\n"
 "Last-Translator: Antoine Pinsard <antoine.pinsard@gmail.com>\n"
 "Language-Team: None\n"
@@ -231,8 +230,8 @@ msgid "message"
 msgstr "message"
 
 #: core/models.py:370
-msgid "read"
-msgstr "lu"
+msgid "unread"
+msgstr "non lu"
 
 #: core/models.py:388 core/templates/view.html:127
 msgid "Can you please check this out?"

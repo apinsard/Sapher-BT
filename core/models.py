@@ -367,7 +367,7 @@ class Check(models.Model):
     )
 
     is_unread = models.BooleanField(
-        verbose_name = _("read"),
+        verbose_name = _("unread"),
         default      = True,
     )
 
