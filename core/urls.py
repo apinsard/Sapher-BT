@@ -6,9 +6,9 @@ _id  = r'(?P<id>\d+)'
 _cid = r'(?P<cid>\d+)'
 
 urlpatterns = patterns('core.views',
-    url(r'^$'                                         , 'home'       , name='issues_list'  ),
-    url(r'^new/$'                                     , 'edit_issue' , name='new_issue'    ),
-    url(r'^'+ _pid +r'-'+ _id +r'/$'                  , 'view_issue' , name='view_issue'   ),
-    url(r'^'+ _pid +r'-'+ _id +r'/edit$'              , 'edit_issue' , name='edit_issue'   ),
-    url(r'^'+ _pid +r'-'+ _id +r'/edit--'+ _cid +r'$' , 'view_issue' , name='edit_comment' ),
+    url('^$'                                      , 'home'       , name='issues_list'  ),
+    url('^new/$'                                  , 'edit_issue' , name='new_issue'    ),
+    url('^'+ _pid +'-'+ _id +'/$'                 , 'view_issue' , name='view_issue'   ),
+    url('^'+ _pid +'-'+ _id +'/edit$'             , 'edit_issue' , name='edit_issue'   ),
+    url('^'+ _pid +'-'+ _id +'/edit--'+ _cid +'$' , 'view_issue' , name='edit_comment' ),
 )

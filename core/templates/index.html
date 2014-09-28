@@ -84,7 +84,12 @@
       </tr>
       {% for check in checks %}
         <tr>
-          <td>[<a href="{{ check.get_absolute_url }}" title="{{ check.requested_on }}" data-toggle=tooltip data-placement=bottom>{{ check.issue }}</a>] {{ check.requester }}: {{ check.get_message }}</td>
+          <td>
+            <a {% if check.is_unread %}class=unread-check{% endif %}
+              href="{{ check.get_absolute_url }}" title="{{ check.requested_on }}" data-toggle=tooltip data-placement=bottom>[{% if check.is_unread %}<span
+                class="glyphicon glyphicon-bell"></span>&nbsp;{%endif%}{{ check.issue }}]</a>
+            <i>{{ check.requester }}:</i> {{ check.get_message }}
+          </td>
         </tr>
       {% endfor %}
     </table>

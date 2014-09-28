@@ -15,6 +15,6 @@ main { margin-bottom: 20px; }
 
 .form-control-feedback { cursor: pointer; }
 
-.active-focus {
-  box-shadow: 0 0 15px 5px #428BAC;
-}
+.active-focus { box-shadow: 0 0 15px 5px #428BAC; }
+
+.unread-check { font-weight: bold; }

@@ -376,10 +376,11 @@ class Check(models.Model):
                 self.requested_on)
 
     def get_absolute_url(self):
-        if self.comment:
-            return self.comment.get_absolute_url()
-        else:
-            return self.issue.get_absolute_url()
+        url = self.issue.get_absolute_url()
+        url += '?check='+ str(self.id)
+        if self.comment_id:
+            url += '#'+ str(self.comment_id)
+        return url
 
     def get_message(self):
         if self.message:

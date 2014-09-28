@@ -1,6 +1,7 @@
 # Distributed under the terms of the GNU General Public License v2
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from core.models import *
@@ -110,6 +111,16 @@ def view_issue(request, pid, id, cid=None):
 
     if cid:
         comment = issue.comments.get(pk=cid)
+
+    if 'check' in request.GET:
+        try:
+            check = Check.objects.get(pk=request.GET['check'], issue_id=id,
+                    requested_id=request.user.id, is_unread=True)
+        except Check.DoesNotExist:
+            pass
+        else:
+            check.is_unread = False
+            check.save()
 
     comment_form = CommentForm(instance=comment)
     check_form   = CheckForm()
