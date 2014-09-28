@@ -80,11 +80,11 @@
   <div class="col-md-4">
     <table class="table table-striped">
       <tr>
-        <th>{% trans "Latest Activity" %}</th>
+        <th>{% trans "Things to check out" %}</th>
       </tr>
-      {% for log in logs %}
+      {% for check in checks %}
         <tr>
-          <td><a href="{{ log.issue.get_absolute_url }}" title="{{ log.date }}" data-toggle=tooltip data-placement=bottom>{{ log }}</a></td>
+          <td>[<a href="{{ check.get_absolute_url }}" title="{{ check.date }}" data-toggle=tooltip data-placement=bottom>{{ check.issue }}</a>] {{ check.requester }}: {{ check.get_message }}</td>
         </tr>
       {% endfor %}
     </table>

@@ -222,9 +222,6 @@ class Issue(models.Model):
     def get_edit_url(self):
         return reverse('edit_issue', kwargs={'pid': self.project_id, 'id': str(self.id)})
 
-    def log_action(self, user, message):
-        Log.add_entry(message, user.id, self.id)
-
 class Comment(models.Model):
 
     class Meta:
@@ -257,6 +254,12 @@ class Comment(models.Model):
         blank        = True,
         null         = True,
     )
+
+    def get_absolute_url(self):
+        return reverse('view_issue', kwargs={
+            'pid' : self.issue.project_id,
+            'id'  : str(self.issue_id)}
+        ) +"#"+ str(self.id)
 
     def get_edit_url(self):
         return reverse('edit_comment', kwargs={
@@ -328,50 +331,53 @@ class UserSettings(models.Model):
         self.type_filters, self.state_filters, self.priority_filters \
             = (UserSettings.FILTERS_ALL_ENABLED,)*3
 
-class Log(models.Model):
+class Check(models.Model):
 
-    class Meta:
-        verbose_name = _('log')
-        verbose_name_plural = _('logs')
-        ordering = ['-date']
+    requester = models.ForeignKey('auth.User',
+        verbose_name = _('requester'),
+        related_name = 'checks_sent',
+    )
 
-    NEW_ISSUE       = 1
-    EDIT_ISSUE      = 2
-    NEW_COMMENT     = 3
-    EDIT_COMMENT    = 4
-    ATTACH_FILE     = 5,
-
-    MESSAGE_CHOICES = [
-        (NEW_ISSUE       , _("%(user)s created %(issue)s")),
-        (EDIT_ISSUE      , _("%(user)s updated %(issue)s")),
-        (NEW_COMMENT     , _("%(user)s commented %(issue)s")),
-        (EDIT_COMMENT    , _("%(user)s edited a comment on %(issue)s")),
-        (ATTACH_FILE     , _("%(user)s attached a file to %(issue)s")),
-    ]
-
-    user = models.ForeignKey('auth.User',
-        verbose_name = _("user"),
+    requested = models.ForeignKey('auth.User',
+        verbose_name = _('requested'),
+        related_name = 'checks_received',
     )
 
     issue = models.ForeignKey(Issue,
         verbose_name = _('issue'),
+        related_name = 'checks+',
+    )
+
+    comment = models.ForeignKey(Comment,
+        verbose_name = _('comment'),
+        related_name = 'checks+',
+        blank        = True,
+        null         = True,
     )
 
     date = models.DateTimeField(
-        verbose_name = _('date'),
+        verbose_name = _("date"),
         auto_now_add = True,
     )
 
-    message = models.PositiveSmallIntegerField(
-        verbose_name = _('message'),
-        choices      = MESSAGE_CHOICES,
+    message = models.CharField(
+        verbose_name = _("message"),
+        blank        = True,
+        max_length   = 255,
     )
 
     def __str__(self):
-        return self.get_message_display() % {'user': self.user, 'issue': self.issue}
-    
-    @staticmethod
-    def add_entry(msg, usr_id, iss_id):
-        Log(message=msg, user_id=usr_id, issue_id=iss_id).save()
+        return '[%s] %s &gt; %s (%s)' % (self.issue, self.requester, self.requested, self.date)
 
+    def get_absolute_url(self):
+        if self.comment:
+            return self.comment.get_absolute_url()
+        else:
+            return self.issue.get_absolute_url()
+
+    def get_message(self):
+        if self.message:
+            return self.message
+        else:
+            return _("Can you please check this out?")
 

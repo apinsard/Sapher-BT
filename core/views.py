@@ -63,8 +63,6 @@ def home(request):
         if usersettings.filter_disabled(issue_filter):
             issues = issues.exclude(**{issue_filter.filter_name+'_id': issue_filter.id})
 
-    logs = Log.objects.all()[:30]
-
     return render_to_response('index.html', {
         'user': request.user,
         'issues': issues,
@@ -73,7 +71,6 @@ def home(request):
         'issue_states': issue_states,
         'usersettings': usersettings,
         'orderby_choices': orderby_choices,
-        'logs': logs,
     }, RequestContext(request))
 
 def edit_issue(request, pid=None, id=None):
@@ -91,12 +88,6 @@ def edit_issue(request, pid=None, id=None):
             if not new_issue.reporter_id:
                 new_issue.reporter_id = request.user.id
             new_issue.save()
-
-            if issue:
-                log_msg = Log.EDIT_ISSUE
-            else:
-                log_msg = Log.NEW_ISSUE
-            new_issue.log_action(request.user, log_msg)
 
             return redirect(new_issue.get_absolute_url())
     else:
@@ -129,23 +120,14 @@ def view_issue(request, pid, id, cid=None):
                 new_comment.issue_id = id
             new_comment.save()
 
-            if comment:
-                log_msg = Log.EDIT_COMMENT
-            else:
-                log_msg = Log.NEW_COMMENT
-            issue.log_action(request.user, log_msg)
-
             return redirect(issue.get_absolute_url())
     else:
         form = CommentForm(instance=comment)
-
-    logs = Log.objects.filter(issue_id=issue.id)[:30]
 
     return render_to_response('view.html', {
         'user': request.user,
         'issue': issue,
         'comments': comments,
         'comment_form': form,
-        'logs': logs,
     }, RequestContext(request))
 
