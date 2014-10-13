@@ -1,6 +1,6 @@
 # Distributed under the terms of the GNU General Public License v2
 """
-Django settings for AladomBT project.
+Django settings for SapherBT project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 
 try:
-    from AladomBT import djenv
+    from SapherBT import djenv
 except ImportError:
     djenv = {}
 
@@ -53,9 +53,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'AladomBT.urls'
+ROOT_URLCONF = 'SapherBT.urls'
 
-WSGI_APPLICATION = 'AladomBT.wsgi.application'
+WSGI_APPLICATION = 'SapherBT.wsgi.application'
 
 
 # Database

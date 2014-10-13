@@ -3,5 +3,5 @@
 **/__pycache__
 **/migrations
 manage.py
-AladomBT/djenv.py
-AladomBT/wsgi.py
+SapherBT/djenv.py
+SapherBT/wsgi.py
