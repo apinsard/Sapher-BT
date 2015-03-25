@@ -1,7 +1,6 @@
 *.sw[po]
 *.py[co]
 **/__pycache__
-**/migrations
 manage.py
 SapherBT/djenv.py
 SapherBT/wsgi.py

@@ -94,11 +94,11 @@
   <div class="col-md-4">
     <table class="table table-striped">
       <tr>
-        <th>{% trans "Things to check out" %}</th>
+        <th>{% trans "Attachments" %}</th>
       </tr>
-      {% for check in checks %}
+      {% for attachment in attachments %}
         <tr>
-          <td>[<a href="{{ check.get_absolute_url }}" title="{{ check.requested_on }}" data-toggle=tooltip data-placement=bottom>{{ check.issue }}</a>] {{ check.requester }}: {{ check.get_message }}</td>
+          <td><a href="{{ attachment.get_absolute_url }}" title="{{ attachment.description }}" data-toggle=tooltip data-placement=bottom>{{ attachment }}</a></td>
         </tr>
       {% endfor %}
     </table>

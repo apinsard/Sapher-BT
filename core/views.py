@@ -1,7 +1,7 @@
 # Distributed under the terms of the GNU General Public License v2
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from core.models import *
@@ -122,6 +122,9 @@ def view_issue(request, pid, id, cid=None):
             check.is_unread = False
             check.save()
 
+    attachments = Attachment.objects.filter(issue_id=id)
+    print(attachments)
+
     comment_form = CommentForm(instance=comment)
     check_form   = CheckForm()
 
@@ -151,5 +154,29 @@ def view_issue(request, pid, id, cid=None):
         'comments': comments,
         'comment_form': comment_form,
         'check_form': check_form,
+        'attachments': attachments,
     }, RequestContext(request))
 
+
+def attach_issue(request, pid, id):
+
+    issue = get_object_or_404(Issue, pk=id)
+
+    required_args = ['type', 'url', 'name', 'description']
+
+    argv = {}
+
+    for arg in required_args:
+        if arg in request.GET:
+            argv[arg] = request.GET[arg]
+        elif arg in request.POST:
+            argv[arg] = request.GET[arg]
+        else:
+            raise Http404("Not found")
+
+    attachment = Attachment(type=argv['type'], url=argv['url'],
+                            name=argv['name'], description=argv['description'],
+                            issue_id=id)
+    attachment.save()
+
+    return HttpResponse("OK")

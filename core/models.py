@@ -388,3 +388,34 @@ class Check(models.Model):
         else:
             return _("Can you please check this out?")
 
+class Attachment(models.Model):
+    
+    TYPE_CHOICES = [
+        ('rev', _("commit")),
+        ('file', _("file")),
+    ]
+
+    type = models.CharField(
+        verbose_name = _("type"),
+        max_length = 30,
+        choices = TYPE_CHOICES)
+
+    url = models.URLField(
+        verbose_name = _("url"))
+
+    name = models.CharField(
+        verbose_name = _("name"),
+        max_length = 100);
+
+    description = models.TextField(
+        verbose_name = _("description"))
+
+    issue = models.ForeignKey(Issue,
+        verbose_name = _('issue'),
+        related_name = 'attachments')
+
+    def __str__(self):
+        return '[%s] %s' % (self.type, self.name)
+
+    def get_absolute_url(self):
+        return self.url
