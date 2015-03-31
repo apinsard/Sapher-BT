@@ -12,4 +12,5 @@ urlpatterns = patterns('core.views',
     url('^'+ _pid +'-'+ _id +'/edit$'             , 'edit_issue'   , name='edit_issue'   ),
     url('^'+ _pid +'-'+ _id +'/edit--'+ _cid +'$' , 'view_issue'   , name='edit_comment' ),
     url('^'+ _pid +'-'+ _id +'/attach$'           , 'attach_issue' , name='attach_issue' ),
+    url('^'+ _pid +'-'+ _id +'.json$'             , 'json_issue'   , name='json_issue' )
 )

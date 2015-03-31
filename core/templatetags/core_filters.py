@@ -4,6 +4,10 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 from core.models import IssueType, IssueState, IssuePriority
 
+import sys
+
+sys.path.append('/home/tony/Workspace/AladomBT/lib/python3.3/site-packages')
+
 import markdown as Markdown
 import re
 
@@ -68,8 +72,10 @@ def markdown(text):
         (r'(^|\s)(https?://[^\s"]+)(\s|$)', r'\1<a href="\2">\2</a>\3'),
         (r'\[\[Commit:([A-Za-z0-9]+)\]\]', 
             r'*'+ _("Associated commit:") +r' [\1]('+ CVS_REPO_URL+r'\1)*'),
-        (r'\[\[Issue:([A-Z]{2,3}-[0-9]+)\]\]', r' [\1](/issues/\1/)'),
-        (r'\[\[Issue:([A-Z]{2,3}-[0-9]+)#([0-9]+)\]\]', r' [\1](/issues/\1/#\2)'),
+        (r'\[\[Issue:([A-Z]{2,3}-[0-9]+)\]\]',
+         r' <a href="/issues/\1/" data-issue="\1">\1</a>'),
+        (r'\[\[Issue:([A-Z]{2,3}-[0-9]+)#([0-9]+)\]\]',
+         r' <a href="/issues/\1/#\2" data-issue="\1">\1</a>'),
     ]
     for k,v in replacements:
         text = re.sub(k,v,text)

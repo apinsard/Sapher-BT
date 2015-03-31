@@ -4,10 +4,13 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
+from django.utils.translation import ugettext as _
 from core.models import *
 from core.forms import *
 
 from itertools import chain
+
+import json
 
 def root(request):
     if request.user.is_authenticated():
@@ -180,3 +183,38 @@ def attach_issue(request, pid, id):
     attachment.save()
 
     return HttpResponse("OK")
+
+
+def json_issue(request, pid, id):
+
+    from core.templatetags.core_filters import labelize_state, \
+                                               labelize_priority, \
+                                               labelize_type
+
+    issue = get_object_or_404(Issue, pk=id)
+
+    layout = '<table class="table table-condensed">'
+    layout += '<tr><td>%(type)s</td><td>%(priority)s</td></tr>'
+    layout += '<tr><td colspan="2">%(state)s</td></tr>'
+    layout += '<tr><td colspan="2">'+_("reporter")+' %(reporter)s</td></tr>'
+    layout += '<tr><td colspan="2">'+_("assignee")+' %(assignee)s</td></tr>'
+    layout += '</table>'
+
+    html_summary = layout % {
+        'type': labelize_type(issue.type, large=True),
+        'priority': labelize_priority(issue.priority, large=True),
+        'state': labelize_state(issue.state, large=False),
+        'assignee': issue.assignee,
+        'reporter': issue.reporter,
+    }
+
+
+    data = json.dumps({
+        'id': issue.id,
+        '__str__': str(issue),
+        'title': issue.title,
+        'html_summary': html_summary,
+    })
+    
+    return HttpResponse(data, content_type='application/json')
+
